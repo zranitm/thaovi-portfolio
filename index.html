@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=1280">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Thảo Vi — Portfolio</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 /* ═══════════════════════════════════
    RESET
@@ -23,25 +23,28 @@
   --stone: #bfbbb3;
   --dust : #99958d;
   --earth: #5e5a52;
+
+  /* Brand palette (uploaded) */
+  --mist : #e8e4e0;
+  --stone2: #cfcbc7;
+  --earth2: #b1a086;
+
+  /* soft hairline for reduced-line look */
+  --hair : #ece9e4;
+
   --serif: 'Cormorant Garamond', Georgia, serif;
   --sans : 'Inter', 'Helvetica Neue', sans-serif;
+  --mono : 'IBM Plex Mono', ui-monospace, monospace;
 
-  /* Frame canvas */
   --FW: 1280px;
   --FH: 800px;
-  /* Padding inside frame */
   --PX: 64px;
   --PY: 28px;
-  /* Header/footer heights */
   --HH: 44px;
   --FF: 38px;
-  /* Gutter */
   --GU: 28px;
-  /* Body height = FH - HH - FF */
   --BH: calc(var(--FH) - var(--HH) - var(--FF));
-  /* Usable body height = BH - 2*PY */
   --IH: calc(var(--BH) - 2 * var(--PY));
-  /* Usable body width = FW - 2*PX */
   --IW: calc(var(--FW) - 2 * var(--PX));
 }
 
@@ -57,13 +60,12 @@ html,body{
 }
 
 /* ═══════════════════════════════════
-   SCALE TO FIT — like email on mobile
-   Frame is always 1280×800, scaled to fit viewport
+   SCALE TO FIT
 ═══════════════════════════════════ */
 #vp{
   position:fixed;inset:0;
   display:flex;align-items:center;justify-content:center;
-  background:var(--wh);
+  background:var(--mist);
 }
 #scale-wrap{
   width:var(--FW);
@@ -71,10 +73,13 @@ html,body{
   position:relative;
   transform-origin:center center;
   flex-shrink:0;
+  background:var(--wh);
+  border:1px solid var(--stone2);
+  box-shadow:0 24px 70px rgba(72,64,52,.16);
 }
 
 /* ═══════════════════════════════════
-   PAGE — crossfade inside scale-wrap
+   PAGE — crossfade
 ═══════════════════════════════════ */
 .pg{
   position:absolute;
@@ -84,7 +89,6 @@ html,body{
 }
 .pg.on{opacity:1;pointer-events:auto}
 
-/* child stagger */
 .pg.on .s{animation:su .52s ease both}
 .pg.on .s:nth-child(1){animation-delay:.06s}
 .pg.on .s:nth-child(2){animation-delay:.13s}
@@ -106,17 +110,6 @@ html,body{
 .warm .fr{background:var(--wh)}
 .wh   .fr{background:var(--wh)}
 
-/* decorative chapter number */
-.cn{
-  position:absolute;right:56px;bottom:52px;
-  font-family:var(--serif);font-size:200px;font-weight:300;
-  letter-spacing:-.06em;line-height:1;
-  color:rgba(0,0,0,0.06);pointer-events:none;user-select:none;
-  z-index:2;  /* floats above layout, semi-transparent overlay */
-}
-.cn-l{right:auto;left:56px;}   /* flip to left for DTO slide */
-.cn-t{bottom:auto;top:80px;}   /* flip to top for Clinique hero area */
-
 /* ═══════════════════════════════════
    HEADER / FOOTER
 ═══════════════════════════════════ */
@@ -130,13 +123,12 @@ html,body{
   height:var(--FF);flex-shrink:0;
   display:flex;justify-content:space-between;align-items:center;
   padding:0 var(--PX);
-  border-top:1px solid var(--sand);
+  border-top:1px solid var(--hair);
   position:relative;z-index:1;
 }
 
 /* ═══════════════════════════════════
-   BODY — the layout canvas
-   Fixed height = --BH, no overflow
+   BODY
 ═══════════════════════════════════ */
 .fb{
   height:var(--BH);flex-shrink:0;
@@ -151,51 +143,71 @@ html,body{
    TYPOGRAPHY
 ═══════════════════════════════════ */
 .dn  {font-family:var(--serif);font-size:108px;font-weight:300;
-      letter-spacing:-.045em;line-height:.9}                      /* display name */
+      letter-spacing:-.045em;line-height:.9}
 .pj  {font-family:var(--serif);font-size:40px;font-weight:300;
-      letter-spacing:-.03em;line-height:1.15}                     /* project title */
+      letter-spacing:-.03em;line-height:1.15}
 .vc  {font-family:var(--serif);font-style:italic;
       font-size:clamp(17px,1.6vw,21px);font-weight:300;
-      letter-spacing:-.01em;line-height:1.55;color:var(--earth)}  /* personal voice */
+      letter-spacing:-.01em;line-height:1.55;color:var(--earth)}
 .qt  {font-family:var(--serif);font-style:italic;
       font-size:clamp(22px,2.2vw,28px);font-weight:300;
-      letter-spacing:-.015em;line-height:1.5;color:var(--ink)}    /* pull quote */
-.bd  {font-family:var(--sans);font-size:13.5px;font-weight:300;
-      line-height:1.85;color:var(--earth);letter-spacing:.01em}   /* body */
-.cp  {font-family:var(--sans);font-size:10px;font-weight:500;
-      letter-spacing:.09em;text-transform:uppercase;color:var(--dust)} /* caption */
+      letter-spacing:-.015em;line-height:1.5;color:var(--ink)}
+.bd  {font-family:var(--sans);font-size:13px;font-weight:300;
+      line-height:1.85;color:var(--earth);letter-spacing:.01em}
+.cp  {font-family:var(--mono);font-size:9.5px;font-weight:400;
+      letter-spacing:.13em;text-transform:uppercase;color:var(--dust)}
+/* black running heads on content pages 2–11 (not cover / finale) */
+#scale-wrap .pg:not(:first-child):not(:last-child) .fh .cp,
+#scale-wrap .pg:not(:first-child):not(:last-child) .ff .cp{color:#000000}
+#scale-wrap .pg:not(:first-child):not(:last-child) .fh .cp .idx{color:var(--earth2)}
 .mt  {font-family:var(--sans);font-size:12px;font-weight:300;
-      color:var(--dust);line-height:1.55;letter-spacing:.01em}    /* meta */
-.sn  {font-family:var(--serif);font-size:56px;font-weight:300;
-      letter-spacing:-.04em;line-height:1}                         /* stat number */
-.sl  {font-family:var(--sans);font-size:10px;font-weight:300;
-      color:var(--dust);line-height:1.35;margin-top:7px;letter-spacing:.02em} /* stat label */
+      color:var(--dust);line-height:1.55;letter-spacing:.01em}
+.sn  {font-family:var(--serif);font-size:68px;font-weight:300;
+      letter-spacing:-.045em;line-height:.92;color:var(--ink)}
+.sl  {font-family:var(--mono);font-size:9px;font-weight:400;
+      color:var(--dust);line-height:1.45;margin-top:9px;letter-spacing:.05em;
+      text-transform:uppercase}
+
+/* graceful wrapping + accents */
+.dn,.pj,.qt,.vc{text-wrap:balance}
+.bd{text-wrap:pretty}
+.idx{color:var(--earth2);font-weight:500}
+.dl{font-family:var(--serif);font-style:italic;font-size:14px;font-weight:400;
+  color:var(--earth);line-height:1.5;letter-spacing:.005em}
+
+/* ═══════════════════════════════════
+   LISTS (added)
+═══════════════════════════════════ */
+.lst{list-style:none;margin:0;padding:0}
+.lst li{font-family:var(--sans);font-size:12.5px;font-weight:300;
+  line-height:1.5;color:var(--earth);letter-spacing:.01em;
+  padding:5px 0 5px 18px;position:relative}
+.lst li::before{content:"–";position:absolute;left:0;top:5px;color:var(--earth2)}
+.lst-lbl{font-family:var(--mono);font-size:9.5px;font-weight:500;
+  letter-spacing:.13em;text-transform:uppercase;color:var(--earth2);
+  margin-bottom:11px;display:block}
 
 /* ═══════════════════════════════════
    STATS ROW
 ═══════════════════════════════════ */
-.stats{display:flex;border-top:1px solid var(--ink);padding-top:16px;margin-top:20px}
-.stat{flex:1;padding-right:16px;border-right:1px solid var(--sand);margin-right:16px}
-.stat:last-child{border-right:none;margin-right:0;padding-right:0}
+.stats{display:flex;border-top:1px solid var(--ink);padding-top:18px;margin-top:22px;gap:28px}
+.stat{flex:1}
+.stat:last-child{margin-right:0;padding-right:0}
 
 /* ═══════════════════════════════════
    IMAGE PLACEHOLDER
-   — simple, predictable, no overflow
 ═══════════════════════════════════ */
 .im{
-  background:var(--sand);
+  background:var(--mist);
   position:relative;overflow:hidden;
   display:flex;align-items:center;justify-content:center;
   flex-shrink:0;
 }
-.im img{
-  position:absolute;inset:0;
-  width:100%;height:100%;
-  object-fit:cover;display:block;
-}
+.im::after{content:"";position:absolute;inset:0;border:1px solid rgba(27,25,22,.07);pointer-events:none}
+.im img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
 .im-label{text-align:center;pointer-events:none}
-.im-label b {display:block;font-family:var(--sans);font-size:12px;
-  font-weight:500;color:var(--dust);letter-spacing:.02em;margin-bottom:5px}
+.im-label b {display:block;font-family:var(--mono);font-size:9.5px;
+  font-weight:500;color:var(--dust);letter-spacing:.1em;margin-bottom:7px;text-transform:uppercase}
 .im-label i {display:block;font-family:var(--serif);font-style:italic;
   font-size:13px;font-weight:300;color:var(--stone);line-height:1.5}
 
@@ -207,118 +219,238 @@ html,body{
   letter-spacing:.02em;color:var(--earth);padding:5px 14px;
   border:1px solid var(--stone);border-radius:100px}
 
+/* link inline */
+.lnk{font-family:var(--sans);font-size:10px;font-weight:500;
+  letter-spacing:.07em;text-transform:uppercase;color:var(--dust);
+  text-decoration:none;border-bottom:1px solid var(--stone);
+  padding-bottom:1px;transition:color .2s;}
+.lnk:hover{color:var(--ink);}
+
 /* ═══════════════════════════════════
    UI CHROME
 ═══════════════════════════════════ */
-/* vertical progress line */
-.vl{position:fixed;left:22px;top:0;width:1px;height:100vh;background:var(--sand);z-index:50}
-.vl-f{width:100%;background:var(--ink);transition:height .65s cubic-bezier(.4,0,.2,1);position:absolute;top:0}
+.nr{
+  position:fixed;bottom:20px;left:50%;transform:translateX(-50%);
+  z-index:200;display:flex;flex-direction:row;
+  align-items:center;gap:9px;
+}
+.np{
+  background:transparent;border:none;cursor:pointer;
+  padding:4px;position:relative;
+  display:flex;align-items:center;justify-content:center;
+}
+.np-num{ display:none; }
+.np-tick{
+  width:6px;height:6px;border-radius:50%;
+  background:var(--stone);
+  transition:background .3s, transform .3s;
+  flex-shrink:0;
+}
+.np.on .np-tick{ background:var(--ink); transform:scale(1.4); }
+.np:hover .np-tick{ background:var(--earth); }
 
-/* nav — numbered editorial ticks */
-.nr{position:fixed;right:24px;top:50%;transform:translateY(-50%);z-index:200;display:flex;flex-direction:column;gap:0;align-items:flex-end}
-.np{background:transparent;border:none;cursor:pointer;padding:5px 0;position:relative;display:flex;align-items:center;gap:10px;text-align:right}
-.np-num{font-family:var(--sans);font-size:9px;font-weight:400;letter-spacing:.05em;color:var(--stone);transition:color .25s;min-width:16px;text-align:right;line-height:1}
-.np.on .np-num{color:var(--ink);font-weight:600}
-.np-tick{width:12px;height:1px;background:var(--stone);transition:width .25s,background .25s;flex-shrink:0}
-.np.on .np-tick{width:24px;background:var(--ink)}
-.np:hover .np-tick{width:18px;background:var(--earth)}
-.np:hover .np-num{color:var(--earth)}
-.npt{position:absolute;right:calc(100% + 12px);top:50%;transform:translateY(-50%);font-family:var(--sans);font-size:9px;font-weight:500;letter-spacing:.07em;text-transform:uppercase;color:var(--dust);opacity:0;transition:opacity .2s;pointer-events:none;white-space:nowrap;background:rgba(255,255,255,.92);padding:2px 6px;border-left:1px solid var(--sand)}
-.np:hover .npt{opacity:1}
+/* ═══════════════════════════════════════════════════
+   MOBILE — Scroll Snap (≤ 767px)
+═══════════════════════════════════════════════════ */
+@media (max-width: 767px) {
+  html.reflow, html.reflow body { overflow: hidden !important; height: 100% !important; width: 100% !important; }
+  html.reflow #vp {
+    position: fixed !important; inset: 0 !important;
+    overflow-y: scroll !important; overflow-x: hidden !important;
+    scroll-snap-type: y mandatory !important;
+    -webkit-overflow-scrolling: touch !important;
+    scrollbar-width: none !important; -ms-overflow-style: none !important;
+    display: block !important; background: var(--wh) !important;
+  }
+  html.reflow #vp::-webkit-scrollbar { display: none !important; }
+  html.reflow #scale-wrap { transform: none !important; width: 100% !important; height: auto !important; position: relative !important; border:none !important; box-shadow:none !important; }
+  html.reflow .pg {
+    position: relative !important; width: 100% !important;
+    height: 100vh !important; height: 100dvh !important;
+    opacity: 1 !important; pointer-events: auto !important;
+    scroll-snap-align: start !important; scroll-snap-stop: always !important;
+    overflow: hidden !important; display: block !important;
+  }
+  html.reflow .fr { width: 100% !important; height: 100vh !important; height: 100dvh !important; }
+  html.reflow .fb {
+    flex-direction: column !important;
+    height: calc(100vh - var(--HH) - var(--FF)) !important;
+    height: calc(100dvh - var(--HH) - var(--FF)) !important;
+    overflow-y: auto !important; overflow-x: hidden !important;
+    scrollbar-width: none !important; -ms-overflow-style: none !important;
+    padding: 18px 20px 24px !important; gap: 16px !important;
+    align-items: stretch !important; align-content: flex-start !important;
+    justify-content: flex-start !important;
+  }
+  html.reflow .fb::-webkit-scrollbar { display: none !important; }
+  html.reflow .fb > * { width: 100% !important; flex-shrink: 0 !important; min-width: 0 !important; }
+  html.reflow .fb div[style*="display:flex"]:not(.im), html.reflow .fb div[style*="display:grid"] {
+    flex-direction: column !important;
+    grid-template-columns: 1fr !important;
+    gap: 14px !important;
+    width: 100% !important;
+    align-items: flex-start !important;
+  }
+  html.reflow [style*="width:540px"], html.reflow [style*="width:500px"], html.reflow [style*="width:480px"], html.reflow [style*="width:460px"], html.reflow [style*="width:440px"], html.reflow [style*="width:430px"], html.reflow [style*="width:420px"], html.reflow [style*="width:400px"], html.reflow [style*="width:380px"], html.reflow [style*="width:360px"], html.reflow [style*="width:340px"], html.reflow [style*="width:320px"], html.reflow [style*="width:300px"], html.reflow [style*="width:280px"], html.reflow [style*="width:260px"], html.reflow [style*="width:240px"], html.reflow [style*="width:200px"], html.reflow [style*="width:150px"], html.reflow [style*="width:130px"] {
+    width: 100% !important; flex-shrink: 0 !important;
+  }
+  html.reflow .im { width: 100% !important; height: 220px !important; flex-shrink: 0 !important; min-height: 0 !important; }
+  html.reflow .im[style*="height:100%"] { height: 60vw !important; max-height: 300px !important; }
+  html.reflow .im[style*="flex:1"] { height: 220px !important; }
+  html.reflow [style*="height:280px"] { height: 180px !important; padding: 0 !important; }
+  html.reflow [style*="height:418px"] { height: auto !important; overflow: visible !important; padding-top: 16px !important; }
+  html.reflow .s[style*="display:flex;gap:14px"] { flex-direction: column !important; gap: 14px !important; }
+  html.reflow .s[style*="display:flex;gap:14px"] > div { width: 100% !important; }
+  html.reflow .s[style*="display:flex;gap:14px"] .im { height: 180px !important; max-height: none !important; }
+  html.reflow .stats { flex-wrap: wrap !important; gap: 14px !important; margin-top: 14px !important; padding-top: 14px !important; }
+  html.reflow .stat { flex: 0 0 calc(50% - 7px) !important; border-right: none !important; }
+  html.reflow .dn { font-size: clamp(40px, 12vw, 64px) !important; line-height: 1.0 !important; }
+  html.reflow .pj { font-size: clamp(22px, 6vw, 30px) !important; }
+  html.reflow .vc { font-size: clamp(15px, 4vw, 18px) !important; }
+  html.reflow .qt { font-size: clamp(18px, 5vw, 24px) !important; }
+  html.reflow .bd { font-size: 13.5px !important; line-height: 1.65 !important; }
+  html.reflow .lst li { font-size: 13.5px !important; }
+  html.reflow .sn { font-size: clamp(34px, 11vw, 52px) !important; }
+  html.reflow .cp { font-size: 8.5px !important; }
+  html.reflow .mt { font-size: 11px !important; }
+  html.reflow [style*="font-size:clamp(80px"] { font-size: clamp(56px, 18vw, 96px) !important; margin-bottom: 14px !important; line-height: 0.92 !important; }
+  html.reflow [style*="font-size:60px"] { font-size: clamp(40px,14vw,60px) !important; }
+  html.reflow .fh { height: auto !important; padding: 14px 20px 8px !important; flex-wrap: wrap !important; gap: 4px !important; }
+  html.reflow .ff { height: auto !important; min-height: var(--FF) !important; padding: 10px 20px !important; flex-wrap: wrap !important; gap: 4px !important; }
+  html.reflow .nr { display: none !important; }
+  html.reflow [style*="left:12.5%"] { display: none !important; }
+  html.reflow .pg[data-label="The Journey"] .fb > div:first-child > div[style*="display:flex"] > div {
+    text-align: left !important; padding: 12px 0 !important;
+    border-top: 1px solid var(--hair) !important;
+  }
+  html.reflow .pg[data-label="The Journey"] .fb > div:first-child > div[style*="display:flex"] > div > div[style*="border-radius:50%"], html.reflow .pg[data-label="The Journey"] .fb > div:first-child > div[style*="display:flex"] > div > div[style*="width:18px"] {
+    margin: 0 0 10px 0 !important;
+  }
 
-/* lang — typographic, no box */
-.ln{position:fixed;top:20px;right:24px;z-index:200;display:flex;align-items:center;background:transparent;border:none}
-.ln button{font-family:var(--sans);font-size:9.5px;font-weight:400;letter-spacing:.09em;text-transform:uppercase;padding:3px 0;border:none;cursor:pointer;background:transparent;color:var(--stone);transition:color .25s;position:relative}
-.ln button.on{color:var(--ink);font-weight:600}
-.ln button.on::after{content:'';position:absolute;bottom:-1px;left:0;width:100%;height:1px;background:var(--ink)}
-.ln-sep{font-family:var(--sans);font-size:10px;color:var(--sand);padding:0 8px;user-select:none;line-height:1}
-
-/* progress */
-.pr{position:fixed;top:0;left:0;height:1.5px;background:var(--ink);z-index:300;transition:width .65s cubic-bezier(.4,0,.2,1)}
-
-/* lang switch */
-[data-l="en"]{display:none}
-body.en [data-l="en"]{display:block}
-body.en [data-l="vi"]{display:none}
+}
 </style>
 </head>
 <body>
-<div class="pr" id="pr"></div>
-<div class="vl"><div class="vl-f" id="vlf"></div></div>
-<div class="ln"><button class="on" onclick="L('vi')">VIE</button><span class="ln-sep">/</span><button onclick="L('en')">EN</button></div>
-<nav class="nr" id="nr"></nav>
 <div id="vp">
 <div id="scale-wrap">
 
 
 <!-- ══════════════════════════════════════════
   01 · COVER
-  Layout: name bottom-left · contact bottom-right
-  No image — pure typography
 ══════════════════════════════════════════ -->
-<div class="pg on wh" data-label="">
+<div class="pg on wh" data-label="Cover">
 <div class="fr">
   <div class="fh s"><span class="cp">Portfolio · 2025 — 2026</span></div>
   <div class="fb s" style="flex-direction:column;justify-content:flex-end;gap:0;">
     <div style="display:flex;justify-content:space-between;align-items:flex-end;">
       <div>
         <div class="dn" style="margin-bottom:20px;">Thảo Vi</div>
-        <p class="mt" data-l="vi">Phạm Ngọc Thảo Vi · 25 · Brand & Marketing Executive · HCMC</p>
-        <p class="mt" data-l="en">Pham Ngoc Thao Vi · 25 · Brand & Marketing Executive · HCMC</p>
+        <p class="mt">Phạm Ngọc Thảo Vi · 25 · Brand &amp; Marketing Executive · HCMC</p>
       </div>
       <div style="text-align:right;max-width:340px;">
-        <p class="vc" style="font-size:15px;margin-bottom:22px;font-style:italic;color:var(--earth);line-height:1.65;">
+        <p class="vc" style="font-size:15px;margin-bottom:8px;font-style:italic;color:var(--earth);line-height:1.65;">
           "People will forget what you said, people will forget what you did, but people will never forget how you made them feel."
         </p>
+        <p class="cp" style="margin-bottom:22px;color:var(--dust);">— Maya Angelou</p>
         <p class="mt" style="margin-bottom:3px;">vipham2802@gmail.com · 0345 068 344</p>
         <a href="https://linkedin.com/in/thaovi28" target="_blank" class="mt" style="text-decoration:none;color:var(--dust);border-bottom:1px solid var(--stone);">linkedin.com/in/thaovi28</a>
       </div>
     </div>
   </div>
   <div class="ff s">
-    <span class="cp" data-l="vi">Phạm Ngọc Thảo Vi</span>
-    <span class="cp" data-l="en">Pham Ngoc Thao Vi</span>
-    <span class="cp">01 / 12</span>
+    <span class="cp">Thảo Vi — Portfolio</span>
+    <span class="cp">01 / 15</span>
   </div>
+</div>
+</div>
+
+
+
+<!-- ══════════════════════════════════════════
+  02 · INTRODUCTION
+══════════════════════════════════════════ -->
+<div class="pg warm" data-label="Introduction">
+<div class="fr">
+  <div class="fh">
+    <span class="cp s">Introduction</span>
+  </div>
+  <div class="fb" style="align-items:stretch;">
+    <div class="s" style="width:540px;flex-shrink:0;overflow:hidden;display:flex;flex-direction:column;justify-content:center;">
+      <p class="vc" style="font-size:26px;margin-bottom:34px;">Hi, I'm Thảo Vi.</p>
+      <p class="bd" style="margin-bottom:20px;">Brand &amp; Marketing professional with experience across specialty coffee, product launch campaigns, brand collaborations, retail activations, and cross-functional projects.</p>
+      <p class="bd" style="margin-bottom:20px;">Over the past three years, I have worked closely between brand storytelling and operational execution, developing campaigns, launching seasonal products, coordinating partnerships, and building customer experiences across both F&amp;B and corporate environments.</p>
+      <p class="bd">I believe strong brands are not only remembered for what they create, but for how consistently they make people feel across every touchpoint.</p>
+    </div>
+    <div class="s im" style="flex:1;height:100%;">
+      <img src="images/profile.jpg" alt="Phạm Ngọc Thảo Vi — personal portrait">
+    </div>
+  </div>
+  <div class="ff"><span class="cp">Thảo Vi — Portfolio</span><span class="cp">02 / 15</span></div>
 </div>
 </div>
 
 
 <!-- ══════════════════════════════════════════
-  02 · INTRODUCTION
-  Layout: text left 560px · portrait right fills
-  Image: 552 × 716 px  (≈ 3:4)
+  TIMELINE OVERVIEW — transition into the journey
 ══════════════════════════════════════════ -->
-<div class="pg warm" data-label="">
+<div class="pg wh" data-label="The Journey">
 <div class="fr">
   <div class="fh">
-    <span class="cp s" data-l="vi">Giới thiệu</span>
-    <span class="cp s" data-l="en">Introduction</span>
-    <span class="cp s">BOS. · 12/2022 — 11/2025</span>
+    <span class="cp s">The journey so far</span>
+    <span class="cp s">2022 — Present</span>
   </div>
-  <div class="fb" style="align-items:stretch;">
-    <!-- text -->
-    <div class="s" style="width:540px;flex-shrink:0;overflow:hidden;display:flex;flex-direction:column;justify-content:center;">
-      <p class="vc" style="font-size:26px;margin-bottom:26px;" data-l="vi">Xin chào,<br>mình là Thảo Vi.<br>Hai mươi lăm tuổi.</p>
-      <p class="vc" style="font-size:26px;margin-bottom:26px;" data-l="en">Hi,<br>I'm Thảo Vi.<br>Twenty-five.</p>
-      <p class="bd" data-l="vi">Mình đã từng đảm nhiệm vị trí Marketing Team Lead tại Bosgaurus Coffee Roasters (BOS.), thương hiệu Specialty Coffee giữa lòng Sài Gòn.</p>
-      <p class="bd" data-l="en">I was the Marketing Team Lead at Bosgaurus Coffee Roasters (BOS.), a Specialty Coffee brand in the heart of Saigon.</p>
+  <div class="fb s" style="flex-direction:column;justify-content:center;gap:64px;padding-top:30px;padding-bottom:30px;">
+
+    <div style="text-align:center;max-width:640px;margin:0 auto;">
+      <h2 class="pj" style="font-size:34px;margin-bottom:14px;">This is my journey.</h2>
+      <p class="bd" style="font-size:14px;">A path from specialty coffee to technology, across brand, communication, and operations.</p>
     </div>
-    <!-- portrait: fills remaining width × full body height -->
-    <div class="s im" style="flex:1;height:100%;">
-      <img src="images/profile.jpg" alt="Phạm Ngọc Thảo Vi — portrait">
+
+    <div style="position:relative;width:100%;max-width:1060px;margin:0 auto;">
+      <div style="position:absolute;top:9px;left:12.5%;right:12.5%;height:2px;background:linear-gradient(90deg,var(--earth2) 0%,var(--stone) 70%,var(--mist) 100%);"></div>
+      <div style="position:relative;display:flex;">
+
+        <div style="flex:1;text-align:center;">
+          <div style="width:18px;height:18px;border-radius:50%;background:var(--ink);margin:0 auto 22px;"></div>
+          <p class="cp" style="color:var(--earth2);margin-bottom:9px;">2022</p>
+          <p style="font-family:var(--serif);font-size:24px;font-weight:300;letter-spacing:-.02em;color:var(--ink);line-height:1.05;margin-bottom:6px;">BOS.</p>
+          <p class="mt" style="font-size:11.5px;">Marketing Coordinator</p>
+        </div>
+
+        <div style="flex:1;text-align:center;">
+          <div style="width:18px;height:18px;border-radius:50%;background:var(--ink);margin:0 auto 22px;"></div>
+          <p class="cp" style="color:var(--earth2);margin-bottom:9px;">2025</p>
+          <p style="font-family:var(--serif);font-size:24px;font-weight:300;letter-spacing:-.02em;color:var(--ink);line-height:1.05;margin-bottom:6px;">BOS.</p>
+          <p class="mt" style="font-size:11.5px;">Marketing Team Lead</p>
+        </div>
+
+        <div style="flex:1;text-align:center;">
+          <div style="width:18px;height:18px;border-radius:50%;background:var(--ink);margin:0 auto 22px;"></div>
+          <p class="cp" style="color:var(--earth2);margin-bottom:9px;">Dec 2025</p>
+          <p style="font-family:var(--serif);font-size:24px;font-weight:300;letter-spacing:-.02em;color:var(--ink);line-height:1.05;margin-bottom:6px;">VNG</p>
+          <p class="mt" style="font-size:11.5px;">Administrative Assistant<br>Business Partner · DTO</p>
+        </div>
+
+        <div style="flex:1;text-align:center;">
+          <div style="width:18px;height:18px;border-radius:50%;border:2px solid var(--earth2);background:var(--wh);margin:0 auto 22px;"></div>
+          <p class="cp" style="color:var(--earth2);margin-bottom:9px;">Next</p>
+          <p style="font-family:var(--serif);font-style:italic;font-size:24px;font-weight:300;letter-spacing:-.02em;color:var(--earth2);line-height:1.05;margin-bottom:6px;">Wherever next</p>
+          <p class="mt" style="font-size:11.5px;font-style:italic;color:var(--dust);">still being written</p>
+        </div>
+
+      </div>
     </div>
+
   </div>
-  <div class="ff"><span class="cp">Thảo Vi · Portfolio</span><span class="cp">02 / 12</span></div>
+  <div class="ff"><span class="cp">Thảo Vi — Portfolio</span><span class="cp">03 / 15</span></div>
 </div>
 </div>
 
 
 <!-- ══════════════════════════════════════════
   03 · BOS. — BRAND SLIDE
-  "BOS." large as brand anchor · roles · quote
 ══════════════════════════════════════════ -->
-<div class="pg warm" data-label="">
+<div class="pg warm" data-label="BOS.">
 <div class="fr">
   <div class="fh">
     <span class="cp s">Bosgaurus Coffee Roasters</span>
@@ -326,282 +458,261 @@ body.en [data-l="vi"]{display:none}
   </div>
   <div class="fb s" style="align-items:center;gap:72px;padding-top:12px;">
 
-    <!-- LEFT: brand name + roles + link -->
     <div style="flex-shrink:0;width:400px;">
       <div style="font-family:var(--serif);font-size:clamp(80px,9vw,116px);
                   font-weight:300;letter-spacing:-.04em;line-height:.9;
                   color:var(--ink);margin-bottom:12px;">BOS.</div>
       <p class="mt" style="margin-bottom:16px;color:var(--stone);letter-spacing:.04em;font-size:10px;text-transform:uppercase;">Since 2015</p>
-      <p class="mt" style="margin-bottom:5px;">Brand & Marketing Lead &nbsp;<span style="color:var(--stone);">|</span>&nbsp; Jan 2025 – Nov 2025</p>
+      <p class="mt" style="margin-bottom:5px;">Marketing Team Lead &nbsp;<span style="color:var(--stone);">|</span>&nbsp; Jan 2025 – Nov 2025</p>
       <p class="mt" style="margin-bottom:20px;">Marketing Coordinator &nbsp;<span style="color:var(--stone);">|</span>&nbsp; Dec 2022</p>
-      <a href="https://bosgauruscoffee.com/" target="_blank"
-         style="font-family:var(--sans);font-size:10px;font-weight:500;
-                letter-spacing:.07em;text-transform:uppercase;
-                color:var(--dust);text-decoration:none;
-                border-bottom:1px solid var(--stone);padding-bottom:1px;
-                transition:color .2s;"
-         onmouseover="this.style.color='var(--ink)'"
-         onmouseout="this.style.color='var(--dust)'">
-        BOSGAURUSCOFFEE.COM ↗
-      </a>
+      <a href="https://bosgauruscoffee.com/" target="_blank" class="lnk">BOSGAURUSCOFFEE.COM ↗</a>
     </div>
 
-    <!-- RIGHT: quote, darker -->
     <div style="flex:1;min-width:0;">
-      <div style="width:32px;height:1px;background:var(--stone);margin-bottom:28px;"></div>
-      <p style="font-family:var(--serif);font-style:italic;font-weight:300;
-                font-size:clamp(17px,1.5vw,20px);letter-spacing:-.01em;
-                line-height:1.6;color:var(--ink);margin-bottom:20px;" data-l="vi">
-        Hành trình làm việc tại BOS., mình thật sự đã được học, được lớn lên cùng công việc.
-      </p>
-      <p style="font-family:var(--serif);font-style:italic;font-weight:300;
-                font-size:clamp(17px,1.5vw,20px);letter-spacing:-.01em;
-                line-height:1.6;color:var(--ink);margin-bottom:20px;" data-l="en">
-        My journey at BOS. was one of genuine learning and growing alongside the work.
-      </p>
-      <p class="bd" style="margin-bottom:16px;" data-l="vi">Mình bắt đầu hiểu rằng trải nghiệm thương hiệu không chỉ nằm ở sản phẩm, mà còn ở cách một vị khách nhớ về cảm giác sau khi rời cửa hàng, cách một menu truyền tải câu chuyện riêng, và cách cả đội ngũ cùng giữ vững chất lượng trong từng chi tiết vận hành mỗi ngày.</p>
-      <p class="bd" style="margin-bottom:16px;" data-l="en">I began to understand that brand experience isn't just about the product. It's about how a guest remembers the feeling after leaving, how a menu communicates its own story, and how a team maintains quality in every operational detail, every day.</p>
-      <p class="bd" data-l="vi">Chính những điều đó đã dạy mình nhiều hơn về brand building, trải nghiệm khách hàng và giá trị của sự nhất quán trong công việc.</p>
-      <p class="bd" data-l="en">Those were the lessons that taught me the most about brand building, customer experience, and the value of consistency.</p>
+      <div style="width:32px;height:1px;background:var(--stone);margin-bottom:22px;"></div>
+      <p class="bd" style="margin-bottom:14px;">From 2022 to 2025, I was part of the Marketing team at Bosgaurus Coffee Roasters (BOS.), a specialty coffee brand known for its strong focus on product quality and customer experience.</p>
+      <p class="bd" style="margin-bottom:11px;">Starting as a Marketing Coordinator and later growing into a Marketing Team Lead role, I worked across:</p>
+      <ul class="lst" style="margin-bottom:14px;">
+        <li>Seasonal product launches</li>
+        <li>Brand collaborations and activations</li>
+        <li>Campaign planning and execution</li>
+        <li>In-store customer experience</li>
+        <li>Coordination across operations, design, barista teams, and external partners</li>
+        <li>Communication planning across digital and offline touchpoints</li>
+      </ul>
+      <p class="bd">Working at BOS. taught me that brand building is not only about communication. It is about maintaining consistency in every operational detail, every customer interaction, and every experience people remember after leaving the store.</p>
     </div>
 
   </div>
-  <div class="ff"><span class="cp">Thảo Vi · Portfolio</span><span class="cp">03 / 12</span></div>
-</div>
-</div>
-
-
-
-<!-- ══════════════════════════════════════════
-  03 · CLOUD.NINE — CONTEXT
-  Layout: text left 380px · hero image right fills
-  Image: 740 × 716 px  (≈ 16:9 → near)
-══════════════════════════════════════════ -->
-<div class="pg warm" data-label="">
-<div class="fr">
-  <span class="cn">01</span>
-  <div class="fh">
-    <span class="cp s">01 · cloud.nine</span>
-    <span class="cp s">BOS., 2025</span>
-  </div>
-  <div class="fb" style="align-items:stretch;">
-    <!-- left text -->
-    <div class="s" style="width:380px;flex-shrink:0;overflow:hidden;display:flex;flex-direction:column;justify-content:center;">
-      <h2 class="pj" style="margin-bottom:6px;">cloud.nine</h2>
-      <p class="mt" style="margin-bottom:3px;" data-l="vi">Phát triển sản phẩm mới · BOS., 2025</p>
-      <p class="mt" style="margin-bottom:3px;" data-l="en">New product line development · BOS., 2025</p>
-      <p class="mt" style="margin-bottom:0;" data-l="vi">Product owner & creative lead</p>
-      <p class="mt" style="margin-bottom:0;" data-l="en">Product owner & creative lead</p>
-      <div style="width:24px;height:1px;background:var(--stone);margin:20px 0;"></div>
-      <p class="bd" style="margin-bottom:13px;" data-l="vi">Sau gần một thập kỷ trên thị trường, BOS. đã xây dựng được hình ảnh của một thương hiệu specialty coffee dành cho những người yêu và am hiểu cà phê.</p>
-      <p class="bd" style="margin-bottom:13px;" data-l="en">After nearly a decade on the market, BOS. had built its image as a specialty coffee brand for those who truly love and understand coffee.</p>
-      <p class="bd" style="margin-bottom:13px;" data-l="vi">Nhưng chính sự chuyên sâu đó đôi khi cũng khiến thương hiệu trở nên khó tiếp cận với một nhóm khách hàng mới, đặc biệt là nữ giới trẻ, những người tìm kiếm sự nhẹ nhàng và cảm xúc nhiều hơn trong trải nghiệm F&B.</p>
-      <p class="bd" style="margin-bottom:13px;" data-l="en">But that very depth sometimes made the brand feel less approachable to a new audience, especially younger women seeking something softer and more emotional in their F&B experience.</p>
-      <p class="bd" data-l="vi">Nhìn thấy khoảng cách đó, team bắt đầu suy nghĩ về cách mở rộng trải nghiệm thương hiệu theo hướng mềm mại hơn, nhưng vẫn giữ được tinh thần "Truly Specialty" vốn có. cloud.nine ra đời từ định hướng đó.</p>
-      <p class="bd" data-l="en">Seeing that gap, the team began thinking about how to expand the brand experience, softer and more approachable, while staying true to the "Truly Specialty" spirit. cloud.nine was born from that direction.</p>
-    </div>
-    <!-- hero image: fills remaining width × full body height -->
-    <div class="s im" style="flex:1;height:100%;">
-      <img src="images/cloud-nine.jpg" alt="cloud.nine — hero moodboard">
-    </div>
-  </div>
-  <div class="ff"><span class="cp">Thảo Vi · Portfolio</span><span class="cp">04 / 12</span></div>
+  <div class="ff"><span class="cp">Phạm Ngọc Thảo Vi · Marketing Team Lead, BOS.</span><span class="cp">04 / 15</span></div>
 </div>
 </div>
 
 
 <!-- ══════════════════════════════════════════
-  05 · CLOUD.NINE — RESULT + 3 LANDSCAPE IMAGES
-  Layout: text 2-col top · 3 landscape images bottom
+  04 · CLOUD.NINE — CONTEXT
 ══════════════════════════════════════════ -->
-<div class="pg warm" data-label="">
+<div class="pg warm" data-label="cloud.nine">
 <div class="fr">
   <div class="fh">
-    <span class="cp s">01 · cloud.nine</span>
-    <span class="cp s">Winter / Spring 2025</span>
+    <span class="cp s"><b class="idx">01</b> · cloud.nine</span>
+    <span class="cp s">A BOS. product line · 2025</span>
   </div>
-  <!-- BODY: column layout top text / bottom images -->
-  <div class="fb" style="flex-direction:column;gap:20px;padding-bottom:var(--PY);">
+  <div class="fb" style="align-items:stretch;gap:56px;">
+    <div class="s" style="flex:1;min-width:0;overflow:hidden;display:flex;flex-direction:column;justify-content:center;">
+      <h2 class="pj" style="font-size:30px;margin-bottom:6px;">cloud.nine</h2>
+      <p class="mt" style="font-style:italic;margin-bottom:2px;">New Seasonal Product Line Development · BOS., 2025</p>
+      <p class="mt" style="font-style:italic;margin-bottom:0;">Product Owner · Brand Experience Lead · Campaign Coordination</p>
+      <div style="width:24px;height:1px;background:var(--stone);margin:18px 0;"></div>
+      <p class="bd" style="font-size:13px;margin-bottom:14px;">After nearly a decade on the market, BOS. had built strong credibility among specialty coffee enthusiasts. However, the brand remained less approachable to younger audiences seeking softer, more lifestyle-oriented F&amp;B experiences.</p>
+      <p class="bd" style="font-size:13px;margin-bottom:14px;">To expand the brand experience while maintaining the "Truly Specialty" spirit, the team developed cloud.nine, a seasonal product line designed to introduce a more emotional, approachable, and visually expressive side of BOS.</p>
+      <p class="bd" style="font-size:13px;margin-bottom:8px;">The first season spoke in three flavors, each shaped into a feeling:</p>
+      <ul class="lst" style="margin-bottom:12px;">
+        <li>Smoked Oak (Gỗ Sồi) for confidence - tự tin</li>
+        <li>Salted Caramel (Caramen Muối) for love - yêu &amp; được yêu</li>
+        <li>Elder Flower (Hoa gạo) for determination - quyết tâm</li>
+      </ul>
+      <p class="bd" style="font-size:13px;">Three feelings a new audience could find a part of themselves in.</p>
+    </div>
+    <div class="s im" style="width:430px;flex-shrink:0;height:100%;">
+      <img src="images/cloud-nine.jpg" alt="cloud.nine hero moodboard">
+    </div>
+  </div>
+  <div class="ff"><span class="cp">Phạm Ngọc Thảo Vi · Marketing Team Lead, BOS.</span><span class="cp">05 / 15</span></div>
+</div>
+</div>
 
-    <!-- TOP: 2-col text -->
-    <div class="s" style="display:flex;gap:48px;flex-shrink:0;">
-      <!-- left col -->
+
+<!-- ══════════════════════════════════════════
+  05 · CLOUD.NINE — RESULT (payoff-first)
+══════════════════════════════════════════ -->
+<div class="pg warm" data-label="cloud.nine · results">
+<div class="fr">
+  <div class="fh">
+    <span class="cp s"><b class="idx">01</b> · cloud.nine</span>
+    <span class="cp s">W/S 2025</span>
+  </div>
+  <div class="fb" style="flex-direction:column;gap:16px;padding-top:20px;padding-bottom:20px;">
+
+    <!-- TOP: lead-in + hero stat -->
+    <div class="s" style="display:flex;align-items:flex-end;justify-content:space-between;gap:40px;flex-shrink:0;border-bottom:1px solid var(--ink);padding-bottom:18px;">
+      <p class="bd" style="flex:1;min-width:0;margin:0;max-width:440px;">Over four months from concept to launch, I led the end-to-end development and rollout of cloud.nine across product, branding, and customer experience.</p>
+      <div style="display:flex;gap:48px;align-items:flex-end;flex-shrink:0;">
+        <div style="text-align:right;">
+          <div class="sn" style="font-size:60px;">2,415</div>
+          <div class="sl">cups sold · Q4 2025</div>
+        </div>
+        <div style="text-align:right;">
+          <div class="sn" style="font-size:60px;">#4</div>
+          <div class="sl">best-selling line at BOS.</div>
+        </div>
+        <div style="text-align:right;">
+          <div class="sn" style="font-size:60px;">4</div>
+          <div class="sl">months, concept to launch</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MID: 3 flavor images -->
+    <div class="s" style="display:flex;gap:14px;flex:1;min-height:0;">
+      <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:8px;min-height:0;">
+        <div class="im" style="flex:1;min-height:0;"><img src="images/flavor-01-tu-tin.jpg" alt="Flavor 01 — Smoked Oak (Tự tin)"></div>
+        <p style="font-family:var(--serif);font-style:italic;font-size:12px;color:var(--dust);letter-spacing:.01em;flex-shrink:0;">Confidence · Tự tin</p>
+      </div>
+      <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:8px;min-height:0;">
+        <div class="im" style="flex:1;min-height:0;"><img src="images/flavor-02-yeu-va-duoc-yeu.jpg" alt="Flavor 02 — Salted Caramel (Yêu &amp; được yêu)"></div>
+        <p style="font-family:var(--serif);font-style:italic;font-size:12px;color:var(--dust);letter-spacing:.01em;flex-shrink:0;">Love · Yêu &amp; được yêu</p>
+      </div>
+      <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:8px;min-height:0;">
+        <div class="im" style="flex:1;min-height:0;"><img src="images/flavor-03-quyet-tam.jpg" alt="Flavor 03 — Elder Flower (Quyết tâm)"></div>
+        <p style="font-family:var(--serif);font-style:italic;font-size:12px;color:var(--dust);letter-spacing:.01em;flex-shrink:0;">Determination · Quyết tâm</p>
+      </div>
+    </div>
+
+    <!-- BOTTOM: two balanced lists -->
+    <div class="s" style="display:flex;gap:64px;flex-shrink:0;align-items:flex-start;">
       <div style="flex:1;min-width:0;">
-        <p class="bd" style="margin-bottom:12px;" data-l="vi">Trong suốt 4 tháng từ giai đoạn ý tưởng đến khi ra mắt, mình phụ trách xuyên suốt quá trình phát triển sản phẩm, xây dựng trải nghiệm thương hiệu và triển khai truyền thông cho cloud.nine.</p>
-        <p class="bd" style="margin-bottom:12px;" data-l="en">Over 4 months from concept to launch, I led the entire product development, brand experience design, and communications rollout for cloud.nine.</p>
-        <p class="bd" data-l="vi">cloud.nine được vận hành như một dòng sản phẩm theo mùa, mỗi mùa mang một sắc thái riêng với hệ thống hương vị, hình ảnh và cảm xúc được phát triển đồng nhất trên nhiều điểm chạm thương hiệu.</p>
-        <p class="bd" data-l="en">cloud.nine runs as a seasonal product line, each season with its own distinct character, developed consistently across flavors, visuals, and emotions on every brand touchpoint.</p>
+        <span class="lst-lbl">Designed to feel coherent across:</span>
+        <ul class="lst">
+          <li>Product storytelling</li>
+          <li>Visual direction</li>
+          <li>In-store experience</li>
+          <li>Campaign communication &amp; social/customer channels</li>
+        </ul>
       </div>
-      <!-- right col -->
       <div style="flex:1;min-width:0;">
-        <p class="bd" style="margin-bottom:12px;" data-l="vi">Ở mùa đầu tiên, team tập trung phát triển ba hương vị chủ đạo, mỗi hương vị đại diện cho một sắc thái tính cách và trải nghiệm khác nhau. Để đảm bảo tinh thần thương hiệu được truyền tải nhất quán, tụi mình xây dựng đầy đủ Product Profile, IMC Plan và Shooting Brief cho toàn campaign.</p>
-        <p class="bd" style="margin-bottom:12px;" data-l="en">In the first season, the team focused on three core flavors, each representing a different personality and experience, building out a full Product Profile, IMC Plan, and Shooting Brief to ensure consistency.</p>
-        <p class="vc" style="font-size:15px;" data-l="vi">cloud.nine đã bước sang season thứ hai, Summer 2026. Đây cũng là lần đầu tiên mình thật sự hiểu cách một thương hiệu có thể mở rộng đến những nhóm khách hàng mới mà không đánh mất bản sắc ban đầu của mình.</p>
-        <p class="vc" style="font-size:15px;" data-l="en">cloud.nine has entered its second season, Summer 2026. This was also the first time I truly understood how a brand can expand to new audiences without losing its original identity.</p>
+        <span class="lst-lbl">Key contributions:</span>
+        <ul class="lst">
+          <li>Developing Product Profiles and campaign direction</li>
+          <li>Coordinating creative assets and shooting preparation</li>
+          <li>Driving launch execution across multiple teams</li>
+          <li>Aligning communication &amp; experience across the customer journey</li>
+        </ul>
       </div>
     </div>
 
-    <!-- BOTTOM: 3 square images side by side with labels -->
-    <div class="s" style="display:flex;gap:14px;flex-shrink:0;">
-      <!-- image 01 -->
-      <div style="flex:1;display:flex;flex-direction:column;gap:10px;">
-        <div class="im" style="width:100%;aspect-ratio:1/1;">
-          <img src="images/flavor-01-tu-tin.jpg" alt="cloud.nine flavor 01 — Tự tin">
-        </div>
-        <p style="font-family:var(--serif);font-style:italic;font-size:12px;
-                  color:var(--dust);flex-shrink:0;letter-spacing:.01em;" data-l="vi">Tự tin</p>
-        <p style="font-family:var(--serif);font-style:italic;font-size:12px;
-                  color:var(--dust);flex-shrink:0;letter-spacing:.01em;" data-l="en">Confidence</p>
-      </div>
-      <!-- image 02 -->
-      <div style="flex:1;display:flex;flex-direction:column;gap:10px;">
-        <div class="im" style="width:100%;aspect-ratio:1/1;">
-          <img src="images/flavor-02-yeu-va-duoc-yeu.jpg" alt="cloud.nine flavor 02 — Yêu &amp; được yêu">
-        </div>
-        <p style="font-family:var(--serif);font-style:italic;font-size:12px;
-                  color:var(--dust);flex-shrink:0;letter-spacing:.01em;" data-l="vi">Yêu & được yêu</p>
-        <p style="font-family:var(--serif);font-style:italic;font-size:12px;
-                  color:var(--dust);flex-shrink:0;letter-spacing:.01em;" data-l="en">Love</p>
-      </div>
-      <!-- image 03 -->
-      <div style="flex:1;display:flex;flex-direction:column;gap:10px;">
-        <div class="im" style="width:100%;aspect-ratio:1/1;">
-          <img src="images/flavor-03-quyet-tam.jpg" alt="cloud.nine flavor 03 — Quyết tâm">
-        </div>
-        <p style="font-family:var(--serif);font-style:italic;font-size:12px;
-                  color:var(--dust);flex-shrink:0;letter-spacing:.01em;" data-l="vi">Quyết tâm</p>
-        <p style="font-family:var(--serif);font-style:italic;font-size:12px;
-                  color:var(--dust);flex-shrink:0;letter-spacing:.01em;" data-l="en">Determination</p>
-      </div>
-    </div>
-
-    <!-- STATS -->
-    <div class="s" style="flex-shrink:0;">
-      <div class="stats">
-        <div class="stat"><div class="sn">#4</div><div class="sl">Best-selling product line at BOS.</div></div>
-        <div class="stat"><div class="sn">4</div><div class="sl">months, from concept to launch</div></div>
-        <div class="stat"><div class="sn">3</div><div class="sl">signature flavors, built around 3 distinct personalities</div></div>
-        <div class="stat"><div class="sn">6</div><div class="sl">cross-functional teams across product, branding & execution</div></div>
-      </div>
+    <!-- CLOSING: full-width payoff quote -->
+    <div class="s" style="flex-shrink:0;padding-top:8px;">
+      <p class="vc" style="font-size:17px;text-align:center;max-width:780px;margin:0 auto;line-height:1.5;">From a single brief to a full seasonal launch, cloud.nine became proof that careful product and brand execution could open a new audience for BOS.</p>
     </div>
 
   </div>
-  <div class="ff"><span class="cp">Thảo Vi · Portfolio</span><span class="cp">05 / 12</span></div>
+  <div class="ff"><span class="cp">Phạm Ngọc Thảo Vi · Marketing Team Lead, BOS.</span><span class="cp">06 / 15</span></div>
 </div>
 </div>
 
 
 <!-- ══════════════════════════════════════════
-  05 · CLINIQUE × BOS.
-  Layout: full-width cinematic hero (top 44%)
-          story text left · stats right (bottom 56%)
-  Image: 1152 × 310 px  (≈ 4:1 cinematic)
+  06 · CLINIQUE × BOS.
 ══════════════════════════════════════════ -->
-<div class="pg warm" data-label="">
+<div class="pg warm" data-label="CLINIQUE × BOS.">
 <div class="fr">
-  <span class="cn cn-t">02</span>
   <div class="fh">
-    <span class="cp s">02 · CLINIQUE × BOS.</span>
-    <span class="cp s">BOS. × Estée Lauder Group, 2025</span>
+    <span class="cp s"><b class="idx">02</b> · CLINIQUE × BOS.</span>
+    <span class="cp s">A BOS. collaboration · Estée Lauder, 2025</span>
   </div>
-  <!-- hero: full frame width, 44% of body height = 718*0.44 ≈ 316px -->
-  <div class="s" style="height:316px;flex-shrink:0;padding:0 var(--PX);overflow:hidden;">
+  <div class="s" style="height:280px;flex-shrink:0;padding:0 var(--PX);overflow:hidden;">
     <div class="im" style="width:100%;height:100%;">
-      <img src="images/clinique-x-bos.jpg" alt="CLINIQUE × BOS. — event hero">
+      <img src="images/clinique-x-bos.png" alt="CLINIQUE × BOS. activation event">
     </div>
   </div>
-  <!-- bottom: text + stats -->
-  <div class="fb s" style="height:374px;flex-shrink:0;padding-top:20px;align-items:flex-start;gap:40px;overflow:hidden;">
+  <div class="fb s" style="height:418px;flex-shrink:0;padding-top:18px;align-items:flex-start;gap:40px;overflow:hidden;">
     <div style="flex:1;min-width:0;overflow:hidden;">
-      <h2 class="pj" style="font-size:32px;margin-bottom:8px;">CLINIQUE × BOS.</h2>
-      <p class="mt" style="margin-bottom:14px;">Brand Experience · Vận hành sự kiện · Phối hợp truyền thông</p>
-      <p class="bd" style="margin-bottom:11px;" data-l="vi">Ngay trước thời điểm cloud.nine ra mắt, BOS. có cơ hội kết nối cùng CLINIQUE thông qua một buổi demo nhỏ giữa hai thương hiệu. Từ cuộc gặp gỡ đó, collaboration được quyết định trước cả khi cloud.nine chính thức xuất hiện trên thị trường. Trong dự án này, mình phụ trách lên kế hoạch, vận hành sự kiện và phối hợp giữa các team để đảm bảo trải nghiệm thương hiệu được triển khai đồng nhất trong suốt hai ngày diễn ra sự kiện.</p>
-      <p class="bd" style="margin-bottom:11px;" data-l="en">Right before cloud.nine's launch, BOS. connected with CLINIQUE through a small brand demo. From that meeting, the collaboration was set before cloud.nine even officially launched. In this project, I led planning, event operations, and cross-team coordination to ensure a consistent brand experience across both days.</p>
-      <p class="bd" style="margin-bottom:11px;" data-l="vi">Với mình, đây còn là "phép thử" đầu tiên của cloud.nine trong một môi trường có tệp khách hàng rất rõ ràng. Khoảnh khắc cloud.nine hòa hợp với không gian và khách hàng của CLINIQUE cũng là lúc mình nhận ra hướng đi của BOS. là đúng.</p>
-      <p class="bd" style="margin-bottom:11px;" data-l="en">For me, this was also cloud.nine's first real-world test in an environment with a very defined audience. The moment cloud.nine harmonized with CLINIQUE's space and customers was when I knew BOS. was heading in the right direction.</p>
-      <p class="vc" style="font-size:15px;" data-l="vi">Mình tin rằng một sự hợp tác hiệu quả không đến từ việc mỗi thương hiệu cố gắng nổi bật hơn nhau, mà đến từ sự đồng điệu trong tinh thần thương hiệu và giá trị mà cả hai cùng muốn mang lại cho khách hàng.</p>
-      <p class="vc" style="font-size:15px;" data-l="en">I believe that effective collaboration doesn't come from each brand trying to outshine the other, but from alignment in brand spirit and the shared value both want to deliver to their customers.</p>
+      <h2 class="pj" style="font-size:30px;margin-bottom:6px;">CLINIQUE × BOS.</h2>
+      <p class="mt" style="font-style:italic;margin-bottom:2px;">Brand Collaboration Activation · BOS. × Estée Lauder Group</p>
+      <p class="mt" style="font-style:italic;margin-bottom:14px;">Event Operations · Brand Experience Coordination · Cross-team Execution</p>
+      <p class="bd" style="font-size:13px;margin-bottom:11px;">Prior to the official launch of cloud.nine, BOS. collaborated with CLINIQUE for a two-day brand activation focused on customer experience and product introduction.</p>
+      <div style="display:flex;gap:40px;align-items:flex-start;">
+        <div style="flex-shrink:0;">
+          <span class="lst-lbl">In this collaboration, I led:</span>
+          <ul class="lst">
+            <li>Event operation planning</li>
+            <li>Customer experience flow</li>
+            <li>Communication between BOS. and CLINIQUE teams</li>
+            <li>On-site execution and logistics</li>
+            <li>A unified brand presence across the activation</li>
+          </ul>
+        </div>
+        <div style="flex:1;min-width:0;">
+          <p class="bd">As cloud.nine's first real-world brand experience test, it strengthened my understanding that effective collaborations are built through alignment in audience, experience, and shared brand values.</p>
+        </div>
+      </div>
     </div>
-    <div style="width:260px;flex-shrink:0;">
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
-        <div><div class="sn" style="font-size:48px;">140+</div><div class="sl">Guests across 2 days of activation</div></div>
-        <div><div class="sn" style="font-size:48px;">100</div><div class="sl">Cups served during the collaboration</div></div>
-        <div style="border-top:1px solid var(--sand);padding-top:12px;margin-top:8px;"><div class="sn" style="font-size:48px;">2</div><div class="sl">Day event, coordinated across multiple touchpoints</div></div>
-        <div style="border-top:1px solid var(--sand);padding-top:12px;margin-top:8px;"><div class="sn" style="font-size:48px;">2</div><div class="sl">Future collaborations expanded after the first partnership</div></div>
+    <div style="width:240px;flex-shrink:0;">
+      <div style="display:flex;flex-direction:column;gap:18px;">
+        <div><div class="sn" style="font-size:44px;">140+</div><div class="sl">Guests across two activation days</div></div>
+        <div><div class="sn" style="font-size:44px;">100+</div><div class="sl">Cups served during the collaboration</div></div>
+        <div style="border-top:1px solid var(--hair);padding-top:14px;">
+          <a href="https://www.facebook.com/share/p/1E4sV29dcv/" target="_blank" class="lnk">Featured in CLINIQUE's event coverage ↗</a>
+        </div>
       </div>
     </div>
   </div>
-  <div class="ff"><span class="cp">Thảo Vi · Portfolio</span><span class="cp">06 / 12</span></div>
+  <div class="ff"><span class="cp">Phạm Ngọc Thảo Vi · Marketing Team Lead, BOS.</span><span class="cp">07 / 15</span></div>
 </div>
 </div>
 
 
 <!-- ══════════════════════════════════════════
-  06 · BOS. JOURNEY
-  Layout: text + tags left 400px · image right fills
-  Image: 696 × 716 px  (≈ close to square)
+  07 · BOS. JOURNEY
 ══════════════════════════════════════════ -->
-<div class="pg warm" data-label="">
+<div class="pg warm" data-label="Journey at BOS.">
 <div class="fr">
   <div class="fh">
-    <span class="cp s" data-l="vi">Hành trình tại BOS.</span>
-    <span class="cp s" data-l="en">Journey at BOS.</span>
+    <span class="cp s">Journey at BOS.</span>
     <span class="cp s">12/2022 — 11/2025</span>
   </div>
   <div class="fb" style="flex-direction:column;justify-content:space-between;gap:20px;">
-    <!-- quote -->
     <div class="s">
-      <p class="qt" style="font-size:26px;" data-l="vi">Một hành trình dài<br>học và lớn lên tại BOS.,</p>
-      <p class="qt" style="font-size:26px;" data-l="en">A long journey<br>of learning and growing at BOS.,</p>
+      <p class="qt" style="font-size:26px;">A long journey of learning<br>and growing at BOS.</p>
     </div>
-    <!-- 4 images each with label below -->
     <div class="s" style="display:flex;gap:14px;flex:1;min-height:0;">
       <div style="flex:1;display:flex;flex-direction:column;gap:12px;min-height:0;">
-        <div class="im" style="flex:1;min-height:0;">
-          <img src="images/journey-01.jpg" alt="BOS. journey — Merchandise Development">
-        </div>
-        <p style="font-family:var(--sans);font-size:11px;font-weight:400;
-                  letter-spacing:.02em;color:var(--earth);text-align:center;
-                  flex-shrink:0;">Merchandise Development</p>
+        <div class="im" style="flex:1;min-height:0;"><img src="images/journey-01-merchandise.jpg" alt="Merchandise Development"></div>
+        <p style="font-family:var(--sans);font-size:11px;font-weight:400;letter-spacing:.02em;color:var(--earth);text-align:center;flex-shrink:0;">Merchandise Development</p>
       </div>
       <div style="flex:1;display:flex;flex-direction:column;gap:12px;min-height:0;">
-        <div class="im" style="flex:1;min-height:0;">
-          <img src="images/journey-02.jpg" alt="BOS. journey — Seasonal Campaign">
-        </div>
-        <p style="font-family:var(--sans);font-size:11px;font-weight:400;
-                  letter-spacing:.02em;color:var(--earth);text-align:center;
-                  flex-shrink:0;">Seasonal Campaign</p>
+        <div class="im" style="flex:1;min-height:0;"><img src="images/journey-02-seasonal.jpg" alt="Seasonal Campaign"></div>
+        <p style="font-family:var(--sans);font-size:11px;font-weight:400;letter-spacing:.02em;color:var(--earth);text-align:center;flex-shrink:0;"><a href="https://www.facebook.com/share/r/1D4Rjm4uMz/" target="_blank" style="color:var(--earth);text-decoration:none;border-bottom:1px solid var(--earth2);padding-bottom:1px;">Seasonal Campaign ↗</a></p>
       </div>
       <div style="flex:1;display:flex;flex-direction:column;gap:12px;min-height:0;">
-        <div class="im" style="flex:1;min-height:0;">
-          <img src="images/journey-03.jpg" alt="BOS. journey — Brand Collaboration &amp; Event">
-        </div>
-        <p style="font-family:var(--sans);font-size:11px;font-weight:400;
-                  letter-spacing:.02em;color:var(--earth);text-align:center;
-                  flex-shrink:0;">Brand Collaboration & Event</p>
+        <div class="im" style="flex:1;min-height:0;"><img src="images/journey-03-brand-collab.jpg" alt="Brand Collaboration &amp; Event"></div>
+        <p style="font-family:var(--sans);font-size:11px;font-weight:400;letter-spacing:.02em;color:var(--earth);text-align:center;flex-shrink:0;"><a href="https://www.instagram.com/p/DM7uOdmv1Zs/" target="_blank" style="color:var(--earth);text-decoration:none;border-bottom:1px solid var(--earth2);padding-bottom:1px;">Brand Collaboration &amp; Event ↗</a></p>
       </div>
       <div style="flex:1;display:flex;flex-direction:column;gap:12px;min-height:0;">
-        <div class="im" style="flex:1;min-height:0;">
-          <img src="images/journey-04.jpg" alt="BOS. journey — Content &amp; Brand Voice">
-        </div>
-        <p style="font-family:var(--sans);font-size:11px;font-weight:400;
-                  letter-spacing:.02em;color:var(--earth);text-align:center;
-                  flex-shrink:0;">Content & Brand Voice</p>
+        <div class="im" style="flex:1;min-height:0;"><img src="images/journey-04-content.jpg" alt="Content &amp; Brand Voice"></div>
+        <p style="font-family:var(--sans);font-size:11px;font-weight:400;letter-spacing:.02em;color:var(--earth);text-align:center;flex-shrink:0;"><a href="https://www.instagram.com/reel/DJ5elWLP-1u/" target="_blank" style="color:var(--earth);text-decoration:none;border-bottom:1px solid var(--earth2);padding-bottom:1px;">Content &amp; Brand Voice ↗</a></p>
       </div>
     </div>
   </div>
-  <div class="ff"><span class="cp">Thảo Vi · Portfolio</span><span class="cp">07 / 12</span></div>
+  <div class="ff"><span class="cp">Phạm Ngọc Thảo Vi · Marketing Team Lead, BOS.</span><span class="cp">08 / 15</span></div>
 </div>
 </div>
 
+
+<!-- ══════════════════════════════════════════
+  TRANSITION · BOS → VNG
+══════════════════════════════════════════ -->
+<div class="pg wh" data-label="Specialty coffee → Technology">
+<div class="fr">
+  <div class="fh">
+    <span class="cp s">VNG Corporation</span>
+    <span class="cp s">2025 — Present</span>
+  </div>
+  <div class="fb s" style="flex-direction:column;justify-content:center;align-items:flex-start;gap:0;">
+    <span style="font-family:var(--mono);font-size:9.5px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--earth2);margin-bottom:26px;">From specialty coffee to technology</span>
+    <h1 class="dn" style="font-size:80px;line-height:1.06;margin-bottom:34px;max-width:980px;">A new environment,<br>the same belief in experience.</h1>
+    <p class="vc" style="font-size:19px;max-width:680px;color:var(--ink);">Moving from specialty coffee into a technology organization, I carried a brand and communication mindset into a fast-paced corporate environment, and found that how an organization makes its own people feel is just as deliberate as how a brand makes its customers feel.</p>
+  </div>
+  <div class="ff"><span class="cp">Phạm Ngọc Thảo Vi · Administrative Assistant Business Partner, VNG</span><span class="cp">09 / 15</span></div>
+</div>
+</div>
 
 
 <!-- ══════════════════════════════════════════
   08 · VNG — BRAND SLIDE
-  "VNG" large as brand anchor · role · quote
-  White — clean chapter break
 ══════════════════════════════════════════ -->
-<div class="pg wh" data-label="">
+<div class="pg wh" data-label="VNG Corporation">
 <div class="fr">
   <div class="fh">
     <span class="cp s">VNG Corporation</span>
@@ -609,248 +720,263 @@ body.en [data-l="vi"]{display:none}
   </div>
   <div class="fb s" style="align-items:center;gap:72px;padding-top:12px;">
 
-    <!-- LEFT: brand name + role + link -->
     <div style="flex-shrink:0;width:400px;">
       <div style="font-family:var(--serif);font-size:clamp(80px,9vw,116px);
                   font-weight:300;letter-spacing:-.04em;line-height:.9;
-                  color:var(--ink);margin-bottom:28px;">VNG</div>
-      <p class="mt" style="margin-bottom:20px;">Executive Operations Assistant &nbsp;<span style="color:var(--stone);">|</span>&nbsp; Dec 2025 – Present</p>
-      <a href="https://vng.com.vn/" target="_blank"
-         style="font-family:var(--sans);font-size:10px;font-weight:500;
-                letter-spacing:.07em;text-transform:uppercase;
-                color:var(--dust);text-decoration:none;
-                border-bottom:1px solid var(--stone);padding-bottom:1px;
-                transition:color .2s;"
-         onmouseover="this.style.color='var(--ink)'"
-         onmouseout="this.style.color='var(--dust)'">
-        vng.com.vn ↗
-      </a>
+                  color:var(--ink);margin-bottom:24px;">VNG</div>
+      <p class="mt" style="margin-bottom:6px;">Administrative Assistant Business Partner</p>
+      <p class="mt" style="margin-bottom:20px;">Digital Transformation Office &nbsp;<span style="color:var(--stone);">|</span>&nbsp; Dec 2025 – Present</p>
+      <a href="https://vng.com.vn/" target="_blank" class="lnk">vng.com.vn ↗</a>
     </div>
 
-    <!-- RIGHT: quote, darker -->
     <div style="flex:1;min-width:0;">
-      <div style="width:32px;height:1px;background:var(--stone);margin-bottom:28px;"></div>
-      <p style="font-family:var(--serif);font-style:italic;font-weight:300;
-                font-size:clamp(19px,1.9vw,24px);letter-spacing:-.01em;
-                line-height:1.65;color:var(--ink);" data-l="vi">
-        VNG cho mình cơ hội nhìn sâu hơn vào cách một tổ chức lớn vận hành phía sau những gì người ngoài nhìn thấy.
-
-        Từ hệ thống, quy trình đến cách các team phối hợp trong môi trường tốc độ cao, mình học được nhiều hơn về sự chính xác, tính kỷ luật và khả năng làm việc cùng nhiều stakeholder khác nhau.
-      </p>
-      <p style="font-family:var(--serif);font-style:italic;font-weight:300;
-                font-size:clamp(19px,1.9vw,24px);letter-spacing:-.01em;
-                line-height:1.65;color:var(--ink);" data-l="en">
-        VNG gave me the opportunity to look deeper into how a large organization operates behind what the outside world sees.
-
-        From systems and processes to how teams collaborate in a high-speed environment, I learned more about precision, discipline, and working with diverse stakeholders.
-      </p>
+      <div style="width:32px;height:1px;background:var(--stone);margin-bottom:20px;"></div>
+      <p class="bd" style="margin-bottom:11px;">Within VNG's Digital Transformation Office, my work sits where internal communication, brand experience, and operational execution meet. I focus on:</p>
+      <ul class="lst" style="margin-bottom:13px;">
+        <li>Internal brand communication and branded content</li>
+        <li>Visual communication and presentation design</li>
+        <li>Enterprise event experience and coordination</li>
+        <li>Cross-functional stakeholder coordination</li>
+        <li>Operational precision within a large-scale environment</li>
+      </ul>
+      <p class="bd" style="margin-top:13px;">What started as an operational role became a space to apply brand thinking from the inside out, shaping how information, experience, and identity stay aligned across a large organization, and translating the customer-experience instincts I built in F&amp;B into employee and stakeholder experience at scale.</p>
     </div>
 
   </div>
-  <div class="ff"><span class="cp">Thảo Vi · Portfolio</span><span class="cp">08 / 12</span></div>
+  <div class="ff"><span class="cp">Phạm Ngọc Thảo Vi · Administrative Assistant Business Partner, VNG</span><span class="cp">10 / 15</span></div>
 </div>
 </div>
 
 
 <!-- ══════════════════════════════════════════
-  08 · GOOGLE WORKSPACE EVENT
-  Layout: text + stats left 420px · image right fills
-  Image: 680 × 716 px  (≈ 3:2 portrait-ish)
+  09 · GOOGLE WORKSPACE EVENT
 ══════════════════════════════════════════ -->
-<div class="pg warm" data-label="">
+<div class="pg warm" data-label="Google × VNG">
 <div class="fr">
-  <span class="cn">03</span>
   <div class="fh">
-    <span class="cp s">03 · Google Workspace & Gemini Enterprise Day</span>
-    <span class="cp s">VNG × Google SEA, 2026</span>
+    <span class="cp s"><b class="idx">03</b> · Google Workspace &amp; Gemini Enterprise Day</span>
+    <span class="cp s">A VNG event · Google SEA, 2026</span>
   </div>
-  <div class="fb" style="align-items:stretch;">
-    <div class="s" style="width:420px;flex-shrink:0;overflow:hidden;display:flex;flex-direction:column;justify-content:center;">
-      <h2 class="pj" style="font-size:30px;margin-bottom:10px;">Google Workspace &<br>Gemini Enterprise Day</h2>
-      <p class="mt" style="margin-bottom:3px;">Event Coordinator · VNG × Google SEA</p>
-      <p class="mt">Logistics · Stakeholder Coordination · Visual Execution</p>
+  <div class="fb" style="align-items:stretch;gap:56px;">
+    <div class="s" style="flex:1;min-width:0;overflow:hidden;display:flex;flex-direction:column;justify-content:center;">
+      <h2 class="pj" style="font-size:30px;margin-bottom:8px;">Google Workspace &amp;<br>Gemini Enterprise Day</h2>
+      <p class="mt" style="font-style:italic;margin-bottom:2px;">Enterprise Event Coordination · VNG × Google SEA</p>
+      <p class="mt" style="font-style:italic;">Stakeholder Coordination · Logistics Execution · Visual Design</p>
       <div style="width:24px;height:1px;background:var(--stone);margin:18px 0;"></div>
-      <p class="bd" style="margin-bottom:12px;" data-l="vi">Một tháng sau khi gia nhập VNG, mình tham gia vận hành sự kiện doanh nghiệp đầu tiên của team, đưa Google, Gemini Enterprise và zoi.tech đến VNG Campus. Trong năm ngày chuẩn bị liên tục, mình đảm nhận phần logistics, điều phối và thiết kế các ấn phẩm hình ảnh cho toàn bộ sự kiện.</p>
-      <p class="bd" style="margin-bottom:12px;" data-l="en">One month after joining VNG, I took part in coordinating the team's first enterprise event, bringing Google, Gemini Enterprise and zoi.tech to VNG Campus. Over five consecutive days of preparation, I handled logistics, stakeholder coordination, and all visual design for the event.</p>
-      <p class="vc" style="font-size:15px;" data-l="vi">Chính dự án đã khiến mình cảm nhận rõ hơn nhịp độ của một môi trường công nghệ lớn, nơi mọi trải nghiệm trơn tru phía trước đều được tạo nên từ rất nhiều chi tiết vận hành chính xác phía sau.</p>
-      <p class="vc" style="font-size:15px;" data-l="en">This project showed me clearly the pace of a large tech environment, where every smooth experience on the surface is built from countless precise operational details behind the scenes.</p>
-      <div class="stats">
-        <div class="stat"><div class="sn" style="font-size:44px;">50</div><div class="sl">Senior Leaders, VNG × Google program</div></div>
-        <div class="stat"><div class="sn" style="font-size:44px;">5</div><div class="sl">Days of execution from prep to event day</div></div>
-        <div class="stat"><div class="sn" style="font-size:44px;">2</div><div class="sl">Cross-functional teams coordinating logistics & experience</div></div>
-        <div class="stat"><div class="sn" style="font-size:44px;">1</div><div class="sl">Full day event operated at VNG Campus</div></div>
+      <p class="bd" style="font-size:13px;margin-bottom:18px;">One month after joining VNG, I coordinated the team's enterprise event in partnership with Google SEA and zoi.tech at VNG Campus.</p>
+      <div style="margin-bottom:18px;">
+        <span class="lst-lbl">Within a fast-paced timeline, I handled:</span>
+        <ul class="lst">
+          <li>Stakeholder coordination across internal and external teams</li>
+          <li>Event logistics and operational preparation</li>
+          <li>End-to-end visual design for the event</li>
+          <li>On-site coordination during execution</li>
+        </ul>
       </div>
+      <p class="bd">This project introduced me to the operational intensity of large-scale corporate environments, where smooth stakeholder experiences depend heavily on precise coordination behind the scenes.</p>
     </div>
-    <!-- image fills remaining space -->
-    <div class="s im" style="flex:1;height:100%;">
-      <div class="im-label">
-        <b>680 × 716 px</b>
-        <i>Toàn cảnh sự kiện · VNG Campus<br>Event shot · Speaker / Stage / Guests</i>
+    <div class="s" style="width:480px;flex-shrink:0;display:flex;flex-direction:column;gap:20px;">
+      <div class="im" style="flex:1;width:100%;min-height:0;">
+        <div class="im-label">
+          <b>480 × 500 px</b>
+          <i>Toàn cảnh activation event · VNG Campus<br>Event shot · Speaker / Stage / Guests</i>
+        </div>
+      </div>
+      <div class="stats" style="margin-top:0;">
+        <div class="stat"><div class="sn" style="font-size:44px;">50</div><div class="sl">Senior leaders across VNG &amp; Google</div></div>
+        <div class="stat"><div class="sn" style="font-size:44px;">5</div><div class="sl">Sessions across a full-day program</div></div>
+        <div class="stat"><div class="sn" style="font-size:44px;">5</div><div class="sl">Days of preparation, brief to event day</div></div>
+      </div>
+      <div style="border-top:1px solid var(--hair);padding-top:10px;">
+        <span class="lst-lbl" style="margin-bottom:5px;">Deliverable</span>
+        <p class="dl">A successfully delivered enterprise event, from visual identity to on-site execution.</p>
       </div>
     </div>
   </div>
-  <div class="ff"><span class="cp">Thảo Vi · Portfolio</span><span class="cp">09 / 12</span></div>
+  <div class="ff"><span class="cp">Phạm Ngọc Thảo Vi · Administrative Assistant Business Partner, VNG</span><span class="cp">11 / 15</span></div>
 </div>
 </div>
 
 
 <!-- ══════════════════════════════════════════
   10 · DTO INTERNAL COMMS
-  Layout: image left 380px · text + stats right fills
-  Image: 380 × 716 px  (≈ portrait 1:2)
 ══════════════════════════════════════════ -->
-<div class="pg warm" data-label="">
+<div class="pg warm" data-label="DTO · Internal Comms">
 <div class="fr">
-  <span class="cn cn-l">04</span>
   <div class="fh">
-    <span class="cp s">04 · DTO Internal Communications & Branded Content</span>
+    <span class="cp s"><b class="idx">04</b> · DTO Internal Communications &amp; Branded Content</span>
     <span class="cp s">VNG, 2025 — 2026</span>
   </div>
   <div class="fb" style="align-items:stretch;">
-    <!-- image left — narrow portrait, like a printed newsletter -->
-    <div class="s im" style="width:380px;flex-shrink:0;height:100%;">
+    <div class="s im" style="width:360px;flex-shrink:0;height:100%;">
       <div class="im-label">
-        <b>380 × 716 px</b>
+        <b>360 × 716 px</b>
         <i>Email template mockup<br>Stripo screenshot · Internal comms</i>
       </div>
     </div>
-    <!-- right text + stats -->
     <div class="s" style="flex:1;min-width:0;overflow:hidden;display:flex;flex-direction:column;justify-content:center;">
-      <h2 class="pj" style="font-size:30px;margin-bottom:10px;">DTO · Internal<br>Communications &<br>Branded Content</h2>
-      <p class="mt">Email system design · Stripo template build · Branded executive communications</p>
-      <div style="width:24px;height:1px;background:var(--stone);margin:18px 0;"></div>
-      <p class="bd" style="margin-bottom:12px;" data-l="vi">Song song với công việc vận hành, mình bắt đầu xây dựng hệ thống truyền thông nội bộ cho team, từ những email template đầu tiên đến cách thông tin được trình bày đồng nhất trong từng hoạt động và cập nhật nội bộ.</p>
-      <p class="bd" style="margin-bottom:12px;" data-l="en">Alongside operations, I began building the internal communications system for the team, from the first email templates to how information was presented consistently across every activity and internal update.</p>
-      <p class="bd" style="margin-bottom:12px;" data-l="vi">Chưa từng sử dụng nền tảng Email Marketing trước đó, mình dành ba ngày tự học Stripo và triển khai hơn mười email nội bộ chỉ trong vòng một tháng.</p>
-      <p class="bd" style="margin-bottom:12px;" data-l="en">Having never used an Email Marketing platform before, I self-learned Stripo in three days and deployed over ten internal emails within just one month.</p>
-      <p class="vc" style="font-size:15px;" data-l="vi">Dự án nhỏ này giúp mình hiểu rõ hơn vai trò của internal communication trong việc tạo nên một trải nghiệm tổ chức rõ ràng, nhất quán và dễ tiếp cận hơn cho mỗi thành viên trong phòng ban.</p>
-      <p class="vc" style="font-size:15px;" data-l="en">This small project helped me better understand the role of internal communication in creating a clearer, more consistent, and more accessible organizational experience for every team member.</p>
-      <div class="stats">
-        <div class="stat">
-          <div style="display:flex;align-items:baseline;gap:8px;">
-            <div class="sn">500+</div>
-            <span style="font-family:var(--sans);font-size:11px;font-weight:400;color:var(--stone);letter-spacing:.02em;">Employees</span>
-          </div>
-          <div class="sl" style="margin-top:8px;">Reached through company wide communications</div>
+      <h2 class="pj" style="font-size:30px;margin-bottom:6px;">DTO · Internal Communications<br>&amp; Branded Content</h2>
+      <p class="mt" style="font-style:italic;">Internal Communication System Development · VNG DTO</p>
+      <div style="width:24px;height:1px;background:var(--stone);margin:14px 0;"></div>
+      <p class="bd" style="font-size:13px;margin-bottom:10px;">Alongside operational responsibilities, I built the team's internal communication system. After aligning with leadership on the content categories the team needed, I developed the content, visual design, and platform setup myself, so information could be presented more consistently, clearly, and professionally across internal activities.</p>
+      <p class="bd" style="font-size:13px;margin-bottom:12px;">Despite having no prior experience with Email Marketing platforms, I taught myself Stripo and built branded email templates and communication assets for the team.</p>
+      <div style="display:flex;gap:40px;align-items:flex-start;margin-bottom:4px;">
+        <div style="flex:1;min-width:0;">
+          <span class="lst-lbl">Key contributions:</span>
+          <ul class="lst">
+            <li>Built and customized branded email templates using Stripo</li>
+            <li>Unified the look and tone across internal updates</li>
+            <li>Designed visual assets for executive and team activities</li>
+            <li>Coordinated communication rollout across internal channels</li>
+          </ul>
         </div>
-        <div class="stat">
-          <div style="display:flex;align-items:baseline;gap:8px;">
-            <div class="sn">2</div>
-            <span style="font-family:var(--sans);font-size:11px;font-weight:400;color:var(--stone);letter-spacing:.02em;">Company Wide Communications</span>
+        <div style="width:200px;flex-shrink:0;">
+          <div style="display:flex;flex-direction:column;gap:12px;">
+            <div><div class="sn" style="font-size:44px;">500+</div><div class="sl">Employees reached</div></div>
+            <div><div class="sn" style="font-size:44px;">8</div><div class="sl">Internal communications deployed</div></div>
+            <div><div class="sn" style="font-size:44px;">1</div><div class="sl">Month to implement the system</div></div>
           </div>
-          <div class="sl" style="margin-top:8px;">Delivered across internal channels</div>
-        </div>
-        <div class="stat">
-          <div style="display:flex;align-items:baseline;gap:8px;">
-            <div class="sn">6</div>
-            <span style="font-family:var(--sans);font-size:11px;font-weight:400;color:var(--stone);letter-spacing:.02em;">Internal Newsletters</span>
-          </div>
-          <div class="sl" style="margin-top:8px;">Created and deployed within one month</div>
-        </div>
-        <div class="stat">
-          <div style="display:flex;align-items:baseline;gap:8px;">
-            <div class="sn">3</div>
-            <span style="font-family:var(--sans);font-size:11px;font-weight:400;color:var(--stone);letter-spacing:.02em;">Days</span>
-          </div>
-          <div class="sl" style="margin-top:8px;">From learning Stripo to execution</div>
         </div>
       </div>
     </div>
   </div>
-  <div class="ff"><span class="cp">Thảo Vi · Portfolio</span><span class="cp">10 / 12</span></div>
+  <div class="ff"><span class="cp">Phạm Ngọc Thảo Vi · Administrative Assistant Business Partner, VNG</span><span class="cp">12 / 15</span></div>
 </div>
 </div>
 
 
 <!-- ══════════════════════════════════════════
-  10 · CLOSING
-  Layout: daily scope left · contact right
-  No images — clean warm ending
+  11 · DAILY SCOPE OF WORK
 ══════════════════════════════════════════ -->
-<div class="pg wh" data-label="">
+<div class="pg wh" data-label="Daily Scope · DTO">
 <div class="fr">
   <div class="fh">
-    <span class="cp s" data-l="vi">Phạm vi công việc hằng ngày · DTO</span>
-    <span class="cp s" data-l="en">Daily scope of work · DTO</span>
+    <span class="cp s">Daily scope of work · DTO</span>
   </div>
-  <div class="fb s" style="align-items:center;">
-    <div style="max-width:680px;width:100%;">
-      <p class="bd" style="margin-bottom:36px;" data-l="vi">Song song với các dự án vận hành và truyền thông nội bộ, công việc hằng ngày của mình tại DTO xoay quanh:</p>
-      <p class="bd" style="margin-bottom:36px;" data-l="en">Alongside operations and internal communications projects, my daily work at DTO revolves around:</p>
-      <div style="display:flex;flex-direction:column;gap:0;">
-        <div style="display:flex;align-items:baseline;padding:14px 0;border-bottom:1px solid var(--sand);">
-          <span style="font-family:var(--serif);font-size:11px;color:var(--stone);margin-right:20px;flex-shrink:0;letter-spacing:.04em;">01</span>
-          <span style="font-family:var(--sans);font-size:14px;font-weight:300;color:var(--earth);letter-spacing:.01em;">Executive communications & branded content</span>
-        </div>
-        <div style="display:flex;align-items:baseline;padding:14px 0;border-bottom:1px solid var(--sand);">
-          <span style="font-family:var(--serif);font-size:11px;color:var(--stone);margin-right:20px;flex-shrink:0;letter-spacing:.04em;">02</span>
-          <span style="font-family:var(--sans);font-size:14px;font-weight:300;color:var(--earth);letter-spacing:.01em;">Event logistics & on-site coordination</span>
-        </div>
-        <div style="display:flex;align-items:baseline;padding:14px 0;border-bottom:1px solid var(--sand);">
-          <span style="font-family:var(--serif);font-size:11px;color:var(--stone);margin-right:20px;flex-shrink:0;letter-spacing:.04em;">03</span>
-          <span style="font-family:var(--sans);font-size:14px;font-weight:300;color:var(--earth);letter-spacing:.01em;">Internal training facilitation</span>
-        </div>
-        <div style="display:flex;align-items:baseline;padding:14px 0;border-bottom:1px solid var(--sand);">
-          <span style="font-family:var(--serif);font-size:11px;color:var(--stone);margin-right:20px;flex-shrink:0;letter-spacing:.04em;">04</span>
-          <span style="font-family:var(--sans);font-size:14px;font-weight:300;color:var(--earth);letter-spacing:.01em;">Internal expense coordination & reporting</span>
-        </div>
-        <div style="display:flex;align-items:baseline;padding:14px 0;">
-          <span style="font-family:var(--serif);font-size:11px;color:var(--stone);margin-right:20px;flex-shrink:0;letter-spacing:.04em;">05</span>
-          <span style="font-family:var(--sans);font-size:14px;font-weight:300;color:var(--earth);letter-spacing:.01em;">Cross-functional coordination</span>
-        </div>
+  <div class="fb s" style="flex-direction:column;justify-content:center;gap:0;padding-top:30px;padding-bottom:28px;">
+
+    <!-- LEAD LABEL -->
+    <span class="lst-lbl" style="margin-bottom:30px;">Alongside project-based initiatives, my daily work at DTO includes:</span>
+
+    <!-- GRID 3 × 2 -->
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:34px 56px;padding-top:8px;">
+
+      <div>
+        <div style="font-family:var(--serif);font-size:34px;font-weight:300;color:var(--earth2);line-height:1;letter-spacing:-.02em;margin-bottom:14px;">01</div>
+        <p style="font-family:var(--sans);font-size:15px;font-weight:300;color:var(--ink);line-height:1.4;">Internal communication planning and rollout</p>
       </div>
+
+      <div>
+        <div style="font-family:var(--serif);font-size:34px;font-weight:300;color:var(--earth2);line-height:1;letter-spacing:-.02em;margin-bottom:14px;">02</div>
+        <p style="font-family:var(--sans);font-size:15px;font-weight:300;color:var(--ink);line-height:1.4;">Branded content and visual material design</p>
+      </div>
+
+      <div>
+        <div style="font-family:var(--serif);font-size:34px;font-weight:300;color:var(--earth2);line-height:1;letter-spacing:-.02em;margin-bottom:14px;">03</div>
+        <p style="font-family:var(--sans);font-size:15px;font-weight:300;color:var(--ink);line-height:1.4;">Event logistics and stakeholder coordination</p>
+      </div>
+
+      <div>
+        <div style="font-family:var(--serif);font-size:34px;font-weight:300;color:var(--earth2);line-height:1;letter-spacing:-.02em;margin-bottom:14px;">04</div>
+        <p style="font-family:var(--sans);font-size:15px;font-weight:300;color:var(--ink);line-height:1.4;">Executive support and operational coordination</p>
+      </div>
+
+      <div>
+        <div style="font-family:var(--serif);font-size:34px;font-weight:300;color:var(--earth2);line-height:1;letter-spacing:-.02em;margin-bottom:14px;">05</div>
+        <p style="font-family:var(--sans);font-size:15px;font-weight:300;color:var(--ink);line-height:1.4;">Timeline and workflow management</p>
+      </div>
+
+      <div>
+        <div style="font-family:var(--serif);font-size:34px;font-weight:300;color:var(--earth2);line-height:1;letter-spacing:-.02em;margin-bottom:14px;">06</div>
+        <p style="font-family:var(--sans);font-size:15px;font-weight:300;color:var(--ink);line-height:1.4;">AI training workshops &amp; applying AI across content, communications, and reporting</p>
+      </div>
+
     </div>
+
+    <!-- CLOSING -->
+    <p class="vc" style="font-size:19px;margin-top:48px;max-width:760px;line-height:1.5;">Working in DTO has strengthened my ability to balance operational precision with communication clarity, especially within fast-moving, multi-stakeholder environments.</p>
+
   </div>
-  <div class="ff"><span class="cp">Thảo Vi · Portfolio</span><span class="cp">11 / 12</span></div>
+  <div class="ff"><span class="cp">Phạm Ngọc Thảo Vi · Administrative Assistant Business Partner, VNG</span><span class="cp">13 / 15</span></div>
 </div>
 </div>
 
 
 <!-- ══════════════════════════════════════════
-  12 · CONTACT — closing slide
+  12 · THE JOURNEY — dot-to-dot timeline
 ══════════════════════════════════════════ -->
-<div class="pg wh" dadata-label=""<div class="fr">
-  <div class="fh"><span class="cp s">Portfolio · 2025 — 2026</span></div>
-  <div class="fb s" style="flex-direction:column;justify-content:flex-end;padding-bottom:56px;gap:0;">
-    <div style="display:flex;justify-content:space-between;align-items:flex-end;">
+<div class="pg wh" data-label="Reflection">
+<div class="fr">
+  <div class="fh">
+    <span class="cp s">Looking back</span>
+    <span class="cp s">2022 — Present</span>
+  </div>
+  <div class="fb s" style="flex-direction:column;justify-content:center;gap:0;padding-top:30px;padding-bottom:30px;">
+
+    <!-- QUOTE -->
+    <div style="max-width:820px;margin:0 auto;text-align:center;">
+      <p class="qt" style="font-size:36px;margin-bottom:28px;line-height:1.25;">Every place I have passed through was worth the journey.</p>
+      <p class="bd" style="font-size:14px;line-height:1.95;color:var(--earth);margin-bottom:28px;">We are all still finding our way. Looking back, I realize that every place I have been was beautiful in its own way. What stayed with me was never the length of time, but the people, the lessons, and the small pieces of myself I discovered there.</p>
+      <div style="width:32px;height:1px;background:var(--earth2);margin:0 auto 28px;"></div>
+      <p class="vc" style="font-size:20px;color:var(--ink);line-height:1.5;max-width:640px;margin:0 auto;">And somewhere ahead, I am still looking for the place where I truly belong.</p>
+    </div>
+
+  </div>
+  <div class="ff"><span class="cp">Thảo Vi — Portfolio</span><span class="cp">14 / 15</span></div>
+</div>
+</div>
+
+
+<!-- ══════════════════════════════════════════
+  END · THANK YOU + CONTACT
+══════════════════════════════════════════ -->
+<div class="pg wh" data-label="Thank you">
+<div class="fr">
+  <div class="fh"><span class="cp s"></span><span class="cp s">Portfolio · 2025 — 2026</span></div>
+  <div class="fb s" style="flex-direction:column;justify-content:space-between;padding-top:40px;padding-bottom:40px;">
+    <div style="width:100%;">
+      <span style="font-family:var(--mono);font-size:9.5px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--earth2);">End of portfolio</span>
+    </div>
+    <div style="width:100%;">
+      <h1 class="dn" style="font-size:104px;line-height:1.04;">Thank you<br>for reading.</h1>
+    </div>
+    <div style="width:100%;display:flex;justify-content:space-between;align-items:flex-end;">
       <div>
-        <p class="vc" style="font-size:20px;margin-bottom:36px;max-width:480px;line-height:1.6;" data-l="vi">
-          Cảm ơn bạn đã dành thời gian đọc đến đây.
-        </p>
-        <p class="vc" style="font-size:20px;margin-bottom:36px;max-width:480px;line-height:1.6;" data-l="en">
-          Thank you for taking the time to read this.
-        </p>
-        <div class="dn" style="opacity:.06;pointer-events:none;user-select:none;line-height:.9;">Thảo Vi</div>
+        <p style="font-family:var(--serif);font-size:30px;font-weight:300;letter-spacing:-.03em;color:var(--ink);line-height:1;margin-bottom:8px;">Thảo Vi</p>
+        <p class="mt">Phạm Ngọc Thảo Vi · Brand &amp; Marketing Executive · HCMC</p>
       </div>
-      <div style="text-align:right;align-self:flex-end;">
-        <div style="width:100%;height:1px;background:var(--ink);margin-bottom:20px;"></div>
-        <p class="mt" style="margin-bottom:6px;">vipham2802@gmail.com</p>
-        <p class="mt" style="margin-bottom:6px;">0345 068 344</p>
-        <p class="mt">linkedin.com/in/thaovi28</p>
+      <div style="text-align:right;">
+        <p class="mt" style="margin-bottom:4px;">vipham2802@gmail.com &nbsp;·&nbsp; 0345 068 344</p>
+        <a href="https://linkedin.com/in/thaovi28" target="_blank" class="mt" style="color:var(--ink);text-decoration:none;border-bottom:1px solid var(--earth2);padding-bottom:1px;">linkedin.com/in/thaovi28</a>
       </div>
     </div>
   </div>
-  <div class="ff">
-    <span class="cp" data-l="vi">Phạm Ngọc Thảo Vi</span>
-    <span class="cp" data-l="en">Pham Ngoc Thao Vi</span>
-    <span class="cp">12 / 12</span>
-  </div>
+  <div class="ff"><span class="cp">Thảo Vi — Portfolio</span><span class="cp">15 / 15</span></div>
 </div>
 </div>
 
 
 </div><!-- /scale-wrap -->
 </div><!-- /vp -->
+<nav class="nr" id="nr"></nav>
 <script>
+/* ═══════════════════════════════════════════════════
+   MOBILE DISPLAY MODE — công tắc bật/tắt
+   'scale'  : mobile hiển thị y hệt desktop, thu nhỏ theo màn hình (mặc định)
+   'reflow' : mobile xếp dọc từng slide, cuộn (layout cũ)
+═══════════════════════════════════════════════════ */
+const MOBILE_MODE = 'scale';
+if (MOBILE_MODE === 'reflow') document.documentElement.classList.add('reflow');
+
 (()=>{
+  const REFLOW = () => document.documentElement.classList.contains('reflow');
   const P=[...document.querySelectorAll('.pg')],T=P.length;
-  let C=0,K=false,last=0;
+  let C=0,K=false;
   const NR=document.getElementById('nr');
   P.forEach((p,i)=>{
     const b=document.createElement('button');
     b.className='np'+(i===0?' on':'');
-    const num=String(i+1).padStart(2,'0');
-    b.innerHTML=`<span class="npt">${p.dataset.label}</span><span class="np-num">${num}</span><span class="np-tick"></span>`;
+    b.innerHTML='<span class="np-tick"></span>';
     b.onclick=()=>go(i);NR.appendChild(b);
   });
   function animateStats(pageEl){
@@ -860,76 +986,100 @@ body.en [data-l="vi"]{display:none}
       const suffix=raw.match(/[^0-9]+$/)?.[0]||'';
       const num=parseInt(raw.replace(/[^0-9]/g,''),10);
       if(isNaN(num)||num===0)return;
-      const dur=1000+Math.min(num,400);  // longer for bigger numbers
+      const dur=1000+Math.min(num,400);
       let start=null;
       function step(ts){
         if(!start)start=ts;
         const p=Math.min((ts-start)/dur,1);
-        // ease out quart
         const ease=1-Math.pow(1-p,4);
         el.textContent=prefix+Math.floor(ease*num)+(p<1?'':suffix);
         if(p<1)requestAnimationFrame(step);
         else el.textContent=raw;
       }
-      // small delay so slide fade-in completes first
       setTimeout(()=>requestAnimationFrame(step),200);
     });
   }
-
   function go(i){
     if(i<0||i>=T||i===C||K)return;
     K=true;
     P[C].classList.remove('on');P[i].classList.add('on');
     C=i;
     document.querySelectorAll('.np').forEach((p,j)=>p.classList.toggle('on',j===C));
-    const pc=(C/(T-1)*100).toFixed(1);
-    document.getElementById('pr').style.width=pc+'%';
-    document.getElementById('vlf').style.height=pc+'%';
     animateStats(P[i]);
-    setTimeout(()=>K=false,750);
+    setTimeout(()=>K=false, 900);
   }
-  window.addEventListener('wheel',e=>{
-    e.preventDefault();if(K)return;
-    const t=Date.now();if(t-last<120)return;last=t;
-    go(e.deltaY>0?C+1:C-1);
-  },{passive:false});
-  let ty=0;
-  window.addEventListener('touchstart',e=>{ty=e.touches[0].clientY},{passive:true});
-  window.addEventListener('touchend',e=>{
-    if(K)return;const d=ty-e.changedTouches[0].clientY;
-    if(Math.abs(d)>40)go(d>0?C+1:C-1);
-  },{passive:true});
-  window.addEventListener('keydown',e=>{
-    if(K)return;
-    if(e.key==='ArrowDown'||e.key===' '){e.preventDefault();go(C+1)}
-    if(e.key==='ArrowUp'){e.preventDefault();go(C-1)}
+  function isMobile(){ return REFLOW() && window.innerWidth <= 767; }
+  function initMobile(){
+    P.forEach(p=>{ p.style.opacity='1'; p.style.pointerEvents='auto'; p.style.position='relative'; });
+    const obs = new IntersectionObserver(entries=>{
+      entries.forEach(e=>{
+        if(e.isIntersecting && e.intersectionRatio >= 0.5){
+          const i = Array.from(P).indexOf(e.target);
+          C = i;
+          document.querySelectorAll('.np').forEach((p,j)=>p.classList.toggle('on',j===i));
+        }
+      });
+    },{threshold:0.5, root: document.getElementById('vp')});
+    P.forEach(p=>obs.observe(p));
+  }
+  function initDesktop(){
+    P.forEach((p,i)=>{
+      if(!p.classList.contains('on')){ p.style.opacity=''; p.style.pointerEvents=''; p.style.position=''; }
+    });
+  }
+  if(isMobile()) initMobile(); else initDesktop();
+  window.addEventListener('resize',()=>{ if(isMobile()) initMobile(); else initDesktop(); scaleFrame(); });
+
+  let wheelAcc = 0, wheelTimer = null;
+  window.addEventListener('wheel', e => {
+    if (isMobile()) return;
+    e.preventDefault();
+    if (K) return;
+    wheelAcc += e.deltaY;
+    clearTimeout(wheelTimer);
+    wheelTimer = setTimeout(() => { wheelAcc = 0; }, 200);
+    const THRESHOLD = 80;
+    if (Math.abs(wheelAcc) < THRESHOLD) return;
+    const dir = wheelAcc > 0 ? 1 : -1;
+    wheelAcc = 0;
+    clearTimeout(wheelTimer);
+    go(C + dir);
+  }, { passive: false });
+
+  let ty = 0;
+  window.addEventListener('touchstart', e => { if (isMobile()) return; ty = e.touches[0].clientY; }, { passive: true });
+  window.addEventListener('touchend', e => {
+    if (isMobile()) return;
+    if (K) return;
+    const d = ty - e.changedTouches[0].clientY;
+    if (Math.abs(d) > 60) go(d > 0 ? C + 1 : C - 1);
+  }, { passive: true });
+  window.addEventListener('keydown', e => {
+    if (isMobile()) return;
+    if (K) return;
+    if (e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); go(C + 1); }
+    if (e.key === 'ArrowUp') { e.preventDefault(); go(C - 1); }
   });
 })();
 
-// ── SCALE TO FIT VIEWPORT ──
-// Frame is always 1280×800. Scale it to fill the viewport.
 (function(){
-  const DESIGN_W = 1280;
-  const DESIGN_H = 800;
+  const DESIGN_W = 1280, DESIGN_H = 800;
+  const GAP = 96; // even breathing room around the floating card (desktop)
   const wrap = document.getElementById('scale-wrap');
-
   function scaleFrame(){
-    const vw = window.innerWidth;
-    const vh = window.innerHeight;
-    const scale = Math.min(vw / DESIGN_W, vh / DESIGN_H);
+    const reflow = document.documentElement.classList.contains('reflow');
+    // Reflow mode on phones: no transform (CSS stacks the slides)
+    if(reflow && window.innerWidth <= 767){ wrap.style.transform = 'none'; return; }
+    // Scale mode (and desktop): fit the whole 1280×800 frame into the viewport.
+    // On phones use almost the full width; on desktop keep a breathing gap.
+    const gap = window.innerWidth <= 767 ? 16 : GAP;
+    const scale = Math.min((window.innerWidth - gap) / DESIGN_W, (window.innerHeight - gap) / DESIGN_H);
     wrap.style.transform = 'scale(' + scale + ')';
   }
-
   scaleFrame();
   window.addEventListener('resize', scaleFrame);
+  window.scaleFrame = scaleFrame;
 })();
-
-function L(l){
-  document.body.classList.toggle('en',l==='en');
-  document.querySelectorAll('.ln button').forEach(b=>
-    b.classList.toggle('on',(l==='vi'&&b.textContent==='VIE')||(l==='en'&&b.textContent==='EN'))
-  );
-}
 </script>
 </body>
 </html>
