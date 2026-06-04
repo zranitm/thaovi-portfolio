@@ -64,7 +64,10 @@ html,body{
    SCALE TO FIT
 ═══════════════════════════════════ */
 #vp{
-  position:fixed;inset:0;
+  position:fixed;top:0;left:0;
+  width:100%;
+  height:100vh;       /* fallback */
+  height:100dvh;      /* tracks the visible area as the mobile toolbar shows/hides */
   display:flex;align-items:safe center;justify-content:safe center;
   background:var(--mist);
   overflow:hidden;
@@ -1134,7 +1137,9 @@ if (MOBILE_MODE === 'reflow') document.documentElement.classList.add('reflow');
 
   function fitScale(){
     const gap = window.innerWidth <= 767 ? 16 : GAP;
-    return Math.min((window.innerWidth - gap) / DESIGN_W, (window.innerHeight - gap) / DESIGN_H);
+    const availW = vp.clientWidth  || window.innerWidth;
+    const availH = vp.clientHeight || window.innerHeight;
+    return Math.min((availW - gap) / DESIGN_W, (availH - gap) / DESIGN_H);
   }
 
   function scaleFrame(){
@@ -1147,13 +1152,15 @@ if (MOBILE_MODE === 'reflow') document.documentElement.classList.add('reflow');
       lastDims = null;
       return;
     }
+    const availW = vp.clientWidth  || window.innerWidth;
+    const availH = vp.clientHeight || window.innerHeight;
     const scale = fitScale() * userZoom;
     const w = DESIGN_W * scale, h = DESIGN_H * scale;
     wrap.style.transform = 'scale(' + scale + ')';
     sizer.style.width  = w + 'px';
     sizer.style.height = h + 'px';
-    // Scroll only when the (zoomed) frame is larger than the viewport.
-    const over = (w > window.innerWidth + 0.5) || (h > window.innerHeight + 0.5);
+    // Scroll only when the (zoomed) frame is larger than the visible viewport.
+    const over = (w > availW + 0.5) || (h > availH + 0.5);
     vp.style.overflow = over ? 'auto' : 'hidden';
     lastDims = { w, h, over };
     return lastDims;
@@ -1180,6 +1187,11 @@ if (MOBILE_MODE === 'reflow') document.documentElement.classList.add('reflow');
   scaleFrame();
   updateUI();
   window.addEventListener('resize', scaleFrame);
+  window.addEventListener('orientationchange', () => setTimeout(scaleFrame, 60));
+  // Re-fit when the mobile address bar / toolbar collapses or expands.
+  if (window.visualViewport) {
+    window.visualViewport.addEventListener('resize', scaleFrame);
+  }
   window.scaleFrame = scaleFrame;
 
   // Public hook used by the wheel / keyboard handlers above.
