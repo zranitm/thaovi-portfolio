@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Thảo Vi — Portfolio</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20100%20100'%3E%3Crect%20width='100'%20height='100'%20rx='22'%20fill='%231b1916'/%3E%3Ctext%20x='50'%20y='53'%20font-family='Georgia,serif'%20font-size='66'%20font-style='italic'%20fill='%23e8e4e0'%20text-anchor='middle'%20dominant-baseline='central'%3EV%3C/text%3E%3Crect%20x='34'%20y='76'%20width='32'%20height='2'%20fill='%23b1a086'/%3E%3C/svg%3E">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 /* ═══════════════════════════════════
@@ -64,15 +65,20 @@ html,body{
 ═══════════════════════════════════ */
 #vp{
   position:fixed;inset:0;
-  display:flex;align-items:center;justify-content:center;
+  display:flex;align-items:safe center;justify-content:safe center;
   background:var(--mist);
+  overflow:hidden;
+}
+/* sizer carries the *scaled* footprint so the viewport can scroll when zoomed in */
+#zoom-sizer{
+  flex-shrink:0;
+  line-height:0;
 }
 #scale-wrap{
   width:var(--FW);
   height:var(--FH);
   position:relative;
-  transform-origin:center center;
-  flex-shrink:0;
+  transform-origin:0 0;
   background:var(--wh);
   border:1px solid var(--stone2);
   box-shadow:0 24px 70px rgba(72,64,52,.16);
@@ -249,6 +255,36 @@ html,body{
 .np.on .np-tick{ background:var(--ink); transform:scale(1.4); }
 .np:hover .np-tick{ background:var(--earth); }
 
+/* zoom control */
+.zc{
+  position:fixed;bottom:18px;right:20px;z-index:200;
+  display:flex;align-items:center;gap:1px;
+  background:rgba(255,255,255,.86);
+  -webkit-backdrop-filter:blur(7px);backdrop-filter:blur(7px);
+  border:1px solid var(--stone2);
+  border-radius:100px;
+  padding:3px;
+  box-shadow:0 6px 22px rgba(72,64,52,.13);
+  user-select:none;
+}
+.zc .zb{
+  width:27px;height:27px;border:none;background:transparent;cursor:pointer;
+  font-family:var(--sans);font-size:17px;font-weight:300;color:var(--earth);
+  border-radius:50%;display:flex;align-items:center;justify-content:center;
+  line-height:1;padding:0;transition:background .2s,color .2s;
+}
+.zc .zb:hover{background:var(--parch);color:var(--ink);}
+.zc .zb:active{transform:scale(.92);}
+.zc .zlbl{
+  border:none;background:transparent;cursor:pointer;
+  font-family:var(--mono);font-size:10px;font-weight:400;letter-spacing:.04em;
+  color:var(--earth);min-width:46px;text-align:center;padding:0 4px;
+  transition:color .2s;
+}
+.zc .zlbl:hover{color:var(--ink);}
+html.reflow .zc{display:none !important;}
+@media (max-width:767px){ .zc{display:none !important;} }
+
 /* ═══════════════════════════════════════════════════
    MOBILE — Scroll Snap (≤ 767px)
 ═══════════════════════════════════════════════════ */
@@ -298,7 +334,7 @@ html,body{
   html.reflow .im[style*="height:100%"] { height: 60vw !important; max-height: 300px !important; }
   html.reflow .im[style*="flex:1"] { height: 220px !important; }
   html.reflow [style*="height:280px"] { height: 180px !important; padding: 0 !important; }
-  html.reflow [style*="height:418px"] { height: auto !important; overflow: visible !important; padding-top: 16px !important; }
+  html.reflow [style*="height:438px"] { height: auto !important; overflow: visible !important; padding-top: 16px !important; }
   html.reflow .s[style*="display:flex;gap:14px"] { flex-direction: column !important; gap: 14px !important; }
   html.reflow .s[style*="display:flex;gap:14px"] > div { width: 100% !important; }
   html.reflow .s[style*="display:flex;gap:14px"] .im { height: 180px !important; max-height: none !important; }
@@ -332,6 +368,7 @@ html,body{
 </head>
 <body>
 <div id="vp">
+<div id="zoom-sizer">
 <div id="scale-wrap">
 
 
@@ -616,7 +653,7 @@ html,body{
       <img src="images/clinique-x-bos.png" alt="CLINIQUE × BOS. activation event">
     </div>
   </div>
-  <div class="fb s" style="height:418px;flex-shrink:0;padding-top:18px;align-items:flex-start;gap:40px;overflow:hidden;">
+  <div class="fb s" style="height:438px;flex-shrink:0;padding-top:18px;align-items:flex-start;gap:40px;overflow:hidden;">
     <div style="flex:1;min-width:0;overflow:hidden;">
       <h2 class="pj" style="font-size:30px;margin-bottom:6px;">CLINIQUE × BOS.</h2>
       <p class="mt" style="font-style:italic;margin-bottom:2px;">Brand Collaboration Activation · BOS. × Estée Lauder Group</p>
@@ -697,7 +734,7 @@ html,body{
 <div class="fr">
   <div class="fh">
     <span class="cp s">VNG Corporation</span>
-    <span class="cp s">2025 — Present</span>
+    <span class="cp s">12/2025 — Present</span>
   </div>
   <div class="fb s" style="flex-direction:column;justify-content:center;align-items:flex-start;gap:0;">
     <span style="font-family:var(--mono);font-size:9.5px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--earth2);margin-bottom:26px;">From specialty coffee to technology</span>
@@ -805,7 +842,7 @@ html,body{
 <div class="fr">
   <div class="fh">
     <span class="cp s"><b class="idx">04</b> · DTO Internal Communications &amp; Branded Content</span>
-    <span class="cp s">VNG, 2025 — 2026</span>
+    <span class="cp s">VNG, 12/2025 — 2026</span>
   </div>
   <div class="fb" style="align-items:stretch;">
     <div class="s im" style="width:360px;flex-shrink:0;height:100%;">
@@ -957,8 +994,14 @@ html,body{
 
 
 </div><!-- /scale-wrap -->
+</div><!-- /zoom-sizer -->
 </div><!-- /vp -->
 <nav class="nr" id="nr"></nav>
+<div class="zc" id="zc">
+  <button class="zb" id="z-out" aria-label="Zoom out" title="Zoom out (Ctrl –)">−</button>
+  <button class="zlbl" id="zoom-val" aria-label="Reset zoom" title="Reset zoom (Ctrl 0)">100%</button>
+  <button class="zb" id="z-in" aria-label="Zoom in" title="Zoom in (Ctrl +)">+</button>
+</div>
 <script>
 /* ═══════════════════════════════════════════════════
    MOBILE DISPLAY MODE — công tắc bật/tắt
@@ -1033,6 +1076,14 @@ if (MOBILE_MODE === 'reflow') document.documentElement.classList.add('reflow');
   let wheelAcc = 0, wheelTimer = null;
   window.addEventListener('wheel', e => {
     if (isMobile()) return;
+    // Ctrl / Cmd + wheel  →  zoom the slide (take over the browser's native zoom)
+    if (e.ctrlKey || e.metaKey) {
+      e.preventDefault();
+      if (window.__zoom) window.__zoom.by(e.deltaY < 0 ? 1.12 : 0.892);
+      return;
+    }
+    // When zoomed past the viewport, let the wheel pan the page instead of changing slides
+    if (window.__zoom && window.__zoom.overflowing()) return;
     e.preventDefault();
     if (K) return;
     wheelAcc += e.deltaY;
@@ -1051,12 +1102,20 @@ if (MOBILE_MODE === 'reflow') document.documentElement.classList.add('reflow');
   window.addEventListener('touchend', e => {
     if (isMobile()) return;
     if (K) return;
+    if (window.__zoom && window.__zoom.overflowing()) return; // panning, not navigating
     const d = ty - e.changedTouches[0].clientY;
     if (Math.abs(d) > 60) go(d > 0 ? C + 1 : C - 1);
   }, { passive: true });
   window.addEventListener('keydown', e => {
+    // Zoom shortcuts: Ctrl/Cmd with + , - , 0  (works in any mode)
+    if (e.ctrlKey || e.metaKey) {
+      if (e.key === '=' || e.key === '+') { e.preventDefault(); if (window.__zoom) window.__zoom.by(1.12); return; }
+      if (e.key === '-' || e.key === '_') { e.preventDefault(); if (window.__zoom) window.__zoom.by(0.892); return; }
+      if (e.key === '0')                  { e.preventDefault(); if (window.__zoom) window.__zoom.reset(); return; }
+    }
     if (isMobile()) return;
     if (K) return;
+    if (window.__zoom && window.__zoom.overflowing()) return; // arrows pan while zoomed in
     if (e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); go(C + 1); }
     if (e.key === 'ArrowUp') { e.preventDefault(); go(C - 1); }
   });
@@ -1065,20 +1124,80 @@ if (MOBILE_MODE === 'reflow') document.documentElement.classList.add('reflow');
 (function(){
   const DESIGN_W = 1280, DESIGN_H = 800;
   const GAP = 96; // even breathing room around the floating card (desktop)
-  const wrap = document.getElementById('scale-wrap');
+  const wrap  = document.getElementById('scale-wrap');
+  const sizer = document.getElementById('zoom-sizer');
+  const vp    = document.getElementById('vp');
+
+  let userZoom = 1;                 // 1 = "fit". >1 zooms in, <1 zooms out.
+  const MIN = 0.5, MAX = 3;
+  let lastDims = null;
+
+  function fitScale(){
+    const gap = window.innerWidth <= 767 ? 16 : GAP;
+    return Math.min((window.innerWidth - gap) / DESIGN_W, (window.innerHeight - gap) / DESIGN_H);
+  }
+
   function scaleFrame(){
     const reflow = document.documentElement.classList.contains('reflow');
-    // Reflow mode on phones: no transform (CSS stacks the slides)
-    if(reflow && window.innerWidth <= 767){ wrap.style.transform = 'none'; return; }
-    // Scale mode (and desktop): fit the whole 1280×800 frame into the viewport.
-    // On phones use almost the full width; on desktop keep a breathing gap.
-    const gap = window.innerWidth <= 767 ? 16 : GAP;
-    const scale = Math.min((window.innerWidth - gap) / DESIGN_W, (window.innerHeight - gap) / DESIGN_H);
+    // Reflow mode on phones: CSS stacks the slides, no transform / no sizer footprint.
+    if(reflow && window.innerWidth <= 767){
+      wrap.style.transform = 'none';
+      sizer.style.width = ''; sizer.style.height = '';
+      vp.style.overflow = 'hidden';
+      lastDims = null;
+      return;
+    }
+    const scale = fitScale() * userZoom;
+    const w = DESIGN_W * scale, h = DESIGN_H * scale;
     wrap.style.transform = 'scale(' + scale + ')';
+    sizer.style.width  = w + 'px';
+    sizer.style.height = h + 'px';
+    // Scroll only when the (zoomed) frame is larger than the viewport.
+    const over = (w > window.innerWidth + 0.5) || (h > window.innerHeight + 0.5);
+    vp.style.overflow = over ? 'auto' : 'hidden';
+    lastDims = { w, h, over };
+    return lastDims;
   }
+
+  function centerScroll(){
+    if(!lastDims || !lastDims.over) return;
+    vp.scrollLeft = Math.max(0, (lastDims.w - vp.clientWidth)  / 2);
+    vp.scrollTop  = Math.max(0, (lastDims.h - vp.clientHeight) / 2);
+  }
+
+  function updateUI(){
+    const lbl = document.getElementById('zoom-val');
+    if(lbl) lbl.textContent = Math.round(userZoom * 100) + '%';
+  }
+
+  function setZoom(z){
+    userZoom = Math.min(MAX, Math.max(MIN, z));
+    scaleFrame();
+    centerScroll();   // keep the view anchored to the middle of the slide
+    updateUI();
+  }
+
   scaleFrame();
+  updateUI();
   window.addEventListener('resize', scaleFrame);
   window.scaleFrame = scaleFrame;
+
+  // Public hook used by the wheel / keyboard handlers above.
+  window.__zoom = {
+    by:   f => setZoom(userZoom * f),
+    set:  z => setZoom(z),
+    reset:() => setZoom(1),
+    get:  () => userZoom,
+    overflowing: () => !!(lastDims && lastDims.over)
+  };
+
+  // On-screen control buttons.
+  const zin = document.getElementById('z-in');
+  const zout = document.getElementById('z-out');
+  const zlbl = document.getElementById('zoom-val');
+  if(zin)  zin.addEventListener('click',  () => setZoom(userZoom * 1.12));
+  if(zout) zout.addEventListener('click', () => setZoom(userZoom * 0.892));
+  if(zlbl) zlbl.addEventListener('click', () => setZoom(1));
 })();
 </script>
 </body>
